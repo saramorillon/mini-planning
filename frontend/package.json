@@ -1,0 +1,48 @@
+{
+  "name": "frontend",
+  "private": true,
+  "scripts": {
+    "build": "poi --prod",
+    "watch": "poi --watch",
+    "test": "jest --runInBand",
+    "format": "prettier 'src/**/*.{ts,tsx}' --write",
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/js-cookie": "^2.2.6",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/reactstrap": "^8.7.2",
+    "@types/socket.io-client": "^1.4.36",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
+    "eslint": "^7.23.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest-dom": "^3.6.5",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-testing-library": "^3.10.2",
+    "poi": "^12.4.2",
+    "prettier": "^2.2.1",
+    "ts-loader": "^8.1.0",
+    "ttypescript": "^1.5.12",
+    "typescript": "^3.2.1",
+    "typescript-transform-paths": "^2.2.3"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "js-cookie": "^2.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "reactstrap": "^8.9.0",
+    "socket.io-client": "^4.0.0",
+    "uuid": "^8.3.2"
+  }
+}
