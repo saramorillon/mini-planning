@@ -1,5 +1,5 @@
-import { IoService } from '@src/socket/io'
 import { Request, Response } from 'express'
+import { IoService } from '@src/socket/io'
 
 export function postRoom(req: Request, res: Response): void {
   const namespace = `/${req.params.id}`

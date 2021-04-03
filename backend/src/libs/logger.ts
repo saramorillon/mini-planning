@@ -1,7 +1,7 @@
 import path from 'path'
 import { createLogger, format, transports } from 'winston'
-import { name } from '../../package.json'
-import { config } from '../config'
+import { name } from 'package.json'
+import { config } from '@src/config'
 
 const dirname = path.join(__dirname, '..', '..', 'logs')
 

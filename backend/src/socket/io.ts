@@ -1,6 +1,6 @@
 import http from 'http'
 import io from 'socket.io'
-import { Namespace } from './namespace'
+import { Namespace } from '@src/socket/namespace'
 
 export class IoService {
   static io: io.Server

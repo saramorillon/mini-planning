@@ -17,6 +17,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
+      "package.json": ["package.json"],
       "@src/*": ["src/*"],
       "@tests/*": ["tests/*"]
     },

@@ -1,10 +1,10 @@
 import express from 'express'
 import helmet from 'helmet'
 import { createServer } from 'http'
-import { config } from './config'
-import { logger } from './libs/logger'
-import { router } from './router'
-import { IoService } from './socket/io'
+import { config } from '@src/config'
+import { router } from '@src/router'
+import { logger } from '@src/libs/logger'
+import { IoService } from '@src/socket/io'
 
 const { port } = config
 
