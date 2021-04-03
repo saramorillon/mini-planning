@@ -9,6 +9,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
+    "@mini-utils/eslint-config-typescript": "^1.0.4",
     "@types/axios": "^0.14.0",
     "@types/js-cookie": "^2.2.6",
     "@types/react": "^17.0.3",
@@ -17,11 +18,13 @@
     "@types/reactstrap": "^8.7.2",
     "@types/socket.io-client": "^1.4.36",
     "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.19.0",
-    "@typescript-eslint/parser": "^4.19.0",
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
     "eslint": "^7.23.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest-dom": "^3.6.5",
+    "eslint-plugin-jest": "^24.3.3",
+    "eslint-plugin-jest-dom": "^3.7.0",
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^3.10.2",
@@ -29,7 +32,7 @@
     "prettier": "^2.2.1",
     "ts-loader": "^8.1.0",
     "ttypescript": "^1.5.12",
-    "typescript": "^3.2.1",
+    "typescript": "^4.2.3",
     "typescript-transform-paths": "^2.2.3"
   },
   "dependencies": {
