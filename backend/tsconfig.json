@@ -1,5 +1,8 @@
 {
   "include": ["src", "tests"],
+  "ts-node": {
+    "compiler": "ttypescript"
+  },
   "compilerOptions": {
     "lib": ["ES5", "ES6", "ESNext"],
     "target": "es5",
