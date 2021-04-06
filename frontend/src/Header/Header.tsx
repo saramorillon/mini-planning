@@ -10,7 +10,7 @@ export function Header(): JSX.Element {
     <header>
       <Navbar color="dark" dark expand="md">
         <NavbarBrand tag={NavLink} to="/">
-          <img src="/favicon.svg" /> Mini board
+          <img src="/favicon.svg" /> Mini planning
         </NavbarBrand>
         {name && (
           <Nav className="ml-auto" navbar>
