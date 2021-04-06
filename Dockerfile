@@ -1,57 +1,76 @@
 FROM node:12.16.3-alpine as base
 
-RUN apk update
-RUN apk --no-cache add python g++ make
+# RUN apk update
+# RUN apk --no-cache add python g++ make
 
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-### Back ###
+####################
+##### Sources ######
+####################
 
-FROM base as backend
+# Backend 
+FROM base as bsources
 
-# Install packages
-COPY backend/package.json .
-COPY backend/yarn.lock .
-RUN yarn install --production=false
+COPY backend/package.json backend/
+COPY backend/yarn.lock backend/
 
-# Copy sources
-COPY backend/tsconfig.json .
-COPY backend/tsconfig.build.json .
-COPY backend/src ./src
+RUN yarn --cwd backend install --production=false
 
-# Build
-RUN yarn build
+# Frontend 
+FROM base as fsources
 
-### Front ###
+COPY frontend/package.json frontend/
+COPY frontend/yarn.lock frontend/
 
-FROM base as frontend
+RUN yarn --cwd frontend install --production=false
 
-# Install packages
-COPY frontend/package.json .
-COPY frontend/yarn.lock .
-RUN yarn install --production=false
+####################
+### Dependencies ###
+####################
 
-# Copy sources
-COPY frontend/tsconfig.json .
-COPY frontend/tsconfig.build.json .
-COPY frontend/poi.config.js .
-COPY frontend/public ./public
-COPY frontend/src ./src
+# Backend
+FROM bsources as dependencies
 
-# Build
-RUN yarn build
+RUN yarn --cwd backend install --frozen-lockfile --force --production --ignore-scripts --prefer-offline
 
-### Release ###
+####################
+###### Build #######
+####################
+
+# Backend
+FROM bsources as bbuild
+
+COPY backend/tsconfig.json backend/
+COPY backend/tsconfig.build.json backend/
+COPY backend/src backend/src
+
+RUN yarn --cwd backend build
+
+# Frontend
+FROM fsources as fbuild
+
+COPY frontend/tsconfig.json frontend/
+COPY frontend/tsconfig.build.json frontend/
+COPY frontend/poi.config.js frontend/
+COPY frontend/public frontend/public
+COPY frontend/src frontend/src
+
+RUN yarn --cwd frontend build
+
+####################
+##### Release ######
+####################
 
 FROM base as release
 
-ENV PUBLIC_DIR=/usr/app/dist/src/public
+ENV PUBLIC_DIR=/app/dist/src/public
 
-COPY --from=backend --chown=node:node /app/node_modules/ /app/node_modules/
-COPY --from=backend --chown=node:node /app/dist/ /app/dist/
-COPY --from=frontend --chown=node:node /app/dist/ /app/dist/src/public
+COPY --from=dependencies --chown=node:node /app/backend/node_modules/ /app/node_modules/
+COPY --from=bbuild --chown=node:node /app/backend/dist/ /app/dist/
+COPY --from=fbuild --chown=node:node /app/frontend/dist/ /app/dist/src/public
 
 USER node
 
