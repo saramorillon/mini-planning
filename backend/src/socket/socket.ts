@@ -3,10 +3,10 @@ import { Namespace } from '@src/socket/namespace'
 
 export class Socket {
   constructor(private namespace: Namespace, private socket: io.Socket) {
-    socket.on('join', this.onJoin)
-    socket.on('vote', this.onVote)
-    socket.on('voting', this.onVoting)
-    socket.on('disconnect', this.onDisconnect)
+    socket.on('join', this.onJoin.bind(this))
+    socket.on('vote', this.onVote.bind(this))
+    socket.on('voting', this.onVoting.bind(this))
+    socket.on('disconnect', this.onDisconnect.bind(this))
   }
 
   onJoin(name: string): void {

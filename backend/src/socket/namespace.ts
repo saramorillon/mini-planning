@@ -10,5 +10,5 @@ export class Namespace {
     })
   }
 
-  emit = this.namespace.emit
+  emit = this.namespace.emit.bind(this.namespace)
 }
