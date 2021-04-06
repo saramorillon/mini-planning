@@ -2,7 +2,6 @@ import { cleanEnv, num, str } from 'envalid'
 import { ContentSecurityPolicyOptions } from 'helmet/dist/middlewares/content-security-policy'
 
 const env = cleanEnv(process.env, {
-  APP_KEY: str(),
   APP_PORT: num({ default: 80 }),
   LOG_LEVEL: str({ choices: ['debug', 'info', 'warn', 'error'], default: 'info' }),
   PUBLIC_DIR: str(),
