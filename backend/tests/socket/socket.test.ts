@@ -120,6 +120,24 @@ describe('Socket', () => {
     })
   })
 
+  describe('vote', () => {
+    it('should set client name to unknown when no socket', () => {
+      const mockSocket = ({ id: 'id', on: jest.fn() } as unknown) as io.Socket
+      const mockNamespace = ({ clients: {}, emit: jest.fn() } as unknown) as Namespace
+      const socket = new Socket(mockNamespace, mockSocket)
+      socket.vote('id', 'vote')
+      expect(socket['namespace'].clients).toEqual({ id: ['Unknown', 'vote'] })
+    })
+
+    it('should set vote for client socket', () => {
+      const mockSocket = ({ id: 'id', on: jest.fn() } as unknown) as io.Socket
+      const mockNamespace = ({ clients: { id: ['name', ''] }, emit: jest.fn() } as unknown) as Namespace
+      const socket = new Socket(mockNamespace, mockSocket)
+      socket.vote('id', 'vote')
+      expect(socket['namespace'].clients).toEqual({ id: ['name', 'vote'] })
+    })
+  })
+
   describe('refresh', () => {
     it('should refresh clients', () => {
       const mockSocket = ({ id: 'id', on: jest.fn() } as unknown) as io.Socket

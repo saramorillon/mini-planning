@@ -3,10 +3,14 @@ import { Namespace } from '@src/socket/namespace'
 
 export class Socket {
   constructor(private namespace: Namespace, private socket: io.Socket) {
-    socket.on('join', this.onJoin.bind(this))
-    socket.on('vote', this.onVote.bind(this))
-    socket.on('voting', this.onVoting.bind(this))
-    socket.on('disconnect', this.onDisconnect.bind(this))
+    this.onJoin = this.onJoin.bind(this)
+    this.onVote = this.onVote.bind(this)
+    this.onVoting = this.onVoting.bind(this)
+    this.onDisconnect = this.onDisconnect.bind(this)
+    socket.on('join', this.onJoin)
+    socket.on('vote', this.onVote)
+    socket.on('voting', this.onVoting)
+    socket.on('disconnect', this.onDisconnect)
   }
 
   onJoin(name: string): void {
@@ -15,7 +19,7 @@ export class Socket {
   }
 
   onVote(vote: string): void {
-    this.namespace.clients[this.socket.id][1] = vote
+    this.vote(this.socket.id, vote)
     this.refresh()
   }
 
@@ -23,7 +27,7 @@ export class Socket {
     this.namespace.emit('voting', voting)
     if (voting === true) {
       for (const socketId of Object.keys(this.namespace.clients)) {
-        this.namespace.clients[socketId][1] = ''
+        this.vote(socketId, '')
       }
       this.refresh()
     }
@@ -32,6 +36,13 @@ export class Socket {
   onDisconnect(): void {
     delete this.namespace.clients[this.socket.id]
     this.refresh()
+  }
+
+  vote(socketId: string, vote: string): void {
+    if (!this.namespace.clients[socketId]) {
+      this.namespace.clients[socketId] = ['Unknown', vote]
+    }
+    this.namespace.clients[socketId][1] = vote
   }
 
   refresh(): void {
