@@ -2,7 +2,8 @@ import io from 'socket.io'
 import { Socket } from '@src/socket/socket'
 
 export class Namespace {
-  clients: Record<string, [string, string]> = {}
+  voting = true
+  clients: Record<string, { name: string; vote?: string }> = {}
 
   constructor(public namespace: io.Namespace) {
     this.namespace.on('connection', (socket) => {

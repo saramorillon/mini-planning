@@ -3,13 +3,13 @@ import React, { useMemo } from 'react'
 import { cards } from '../Cards/Cards'
 
 interface IChartProps {
-  users: [string, string][]
+  users: { name: string; vote?: string }[]
   hidden: boolean
 }
 
 export function Chart({ users, hidden }: IChartProps): JSX.Element | null {
   const votes = useMemo(
-    () => cards.map((card) => ({ card, quantity: users.filter(([, vote]) => vote === card).length })),
+    () => cards.map((card) => ({ card, quantity: users.filter(({ vote }) => vote === card).length })),
     [users]
   )
 

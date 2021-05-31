@@ -13,7 +13,7 @@ interface IRoomProps {
 export function Room({ id, name }: IRoomProps): JSX.Element {
   const [socket, setSocket] = useState<SocketIOClient.Socket>()
   const [voting, setVoting] = useState(true)
-  const [users, setUsers] = useState<[string, string][]>([])
+  const [users, setUsers] = useState<{ name: string; vote?: string }[]>([])
 
   useEffect(() => {
     axios.post(`/room/${id}`).then(() => {
@@ -26,8 +26,10 @@ export function Room({ id, name }: IRoomProps): JSX.Element {
 
   useEffect(() => {
     socket?.emit('join', name)
-    socket?.on('refresh', setUsers)
-    socket?.on('voting', setVoting)
+    socket?.on('refresh', ({ voting, users }) => {
+      setVoting(voting)
+      setUsers(users)
+    })
   }, [socket, name])
 
   const onClick = useCallback(() => {
@@ -41,7 +43,7 @@ export function Room({ id, name }: IRoomProps): JSX.Element {
     [socket]
   )
 
-  const vote = useMemo(() => users.find(([user]) => user === name)?.[1] || '', [name, users])
+  const vote = useMemo(() => users.find((user) => user.name === name)?.[1] || '', [name, users])
 
   return (
     <>

@@ -3,7 +3,7 @@ import { Chart } from '../Chart/Chart'
 import { Users } from '../Users/Users'
 
 interface IResultProps {
-  users: [string, string][]
+  users: { name: string; vote?: string }[]
   hidden: boolean
 }
 

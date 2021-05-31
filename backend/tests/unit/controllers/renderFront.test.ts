@@ -1,5 +1,5 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { renderFront } from '../../src/controllers/renderFront'
+import { renderFront } from '@src/controllers/renderFront'
 
 describe('renderFront', () => {
   it('should send index.html', () => {

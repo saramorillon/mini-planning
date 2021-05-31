@@ -14,7 +14,7 @@ export class Socket {
   }
 
   onJoin(name: string): void {
-    this.namespace.clients[this.socket.id] = [name, '']
+    this.namespace.clients[this.socket.id] = { name }
     this.refresh()
   }
 
@@ -24,13 +24,13 @@ export class Socket {
   }
 
   onVoting(voting: boolean): void {
-    this.namespace.emit('voting', voting)
+    this.namespace.voting = voting
     if (voting === true) {
       for (const socketId of Object.keys(this.namespace.clients)) {
-        this.vote(socketId, '')
+        this.vote(socketId)
       }
-      this.refresh()
     }
+    this.refresh()
   }
 
   onDisconnect(): void {
@@ -38,14 +38,17 @@ export class Socket {
     this.refresh()
   }
 
-  vote(socketId: string, vote: string): void {
+  vote(socketId: string, vote?: string): void {
     if (!this.namespace.clients[socketId]) {
-      this.namespace.clients[socketId] = ['Unknown', vote]
+      this.namespace.clients[socketId] = { name: 'Unknown' }
     }
-    this.namespace.clients[socketId][1] = vote
+    this.namespace.clients[socketId].vote = vote
   }
 
   refresh(): void {
-    this.namespace.emit('refresh', Object.values(this.namespace.clients))
+    this.namespace.emit('refresh', {
+      voting: this.namespace.voting,
+      users: Object.values(this.namespace.clients),
+    })
   }
 }
