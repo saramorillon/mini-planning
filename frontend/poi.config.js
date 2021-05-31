@@ -1,15 +1,15 @@
-const path = require('path')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const configFile = 'tsconfig.build.json'
 
 module.exports = {
   entry: 'src/index',
-  configureWebpack: {
-    module: {
-      rules: [
-        {
-          test: /\.(ts|tsx)$/,
-          use: [{ loader: 'ts-loader', options: { compiler: 'ttypescript', configFile: 'tsconfig.build.json' } }],
-        },
-      ],
-    },
+  chainWebpack: (config) => {
+    config.resolve.plugin('paths').use(TsconfigPathsPlugin, [{ configFile }])
   },
+  plugins: [
+    {
+      resolve: '@poi/plugin-typescript',
+      options: { configFile },
+    },
+  ],
 }
