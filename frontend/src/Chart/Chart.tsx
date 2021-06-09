@@ -1,26 +1,21 @@
 import styled from '@emotion/styled'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { cards } from '../Cards/Cards'
 
 interface IChartProps {
-  users: { name: string; vote?: string }[]
+  votes: Record<string, number>
   hidden: boolean
 }
 
-export function Chart({ users, hidden }: IChartProps): JSX.Element | null {
-  const votes = useMemo(
-    () => cards.map((card) => ({ card, quantity: users.filter(({ vote }) => vote === card).length })),
-    [users]
-  )
-
-  if (!users.length) {
+export function Chart({ votes, hidden }: IChartProps): JSX.Element | null {
+  if (!votes.total) {
     return null
   }
 
   return (
     <div className="d-flex">
-      {votes.map(({ card, quantity }) => (
-        <VoteBar key={card} card={card} quantity={hidden ? 0 : quantity} max={users.length} />
+      {cards.map((card) => (
+        <VoteBar key={card} card={card} quantity={!hidden && votes[card]} max={votes.total} />
       ))}
     </div>
   )
@@ -47,7 +42,7 @@ const Fg = styled.div(
   ({ height }: { height: number }) => ({ height: height + '%' })
 )
 
-function VoteBar({ card, quantity, max }: { card: string; quantity: number; max: number }) {
+function VoteBar({ card, quantity = 0, max }: { card: string; quantity?: number; max: number }) {
   return (
     <div className="d-flex flex-column align-items-center">
       <Bg>

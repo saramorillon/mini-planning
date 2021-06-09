@@ -3,14 +3,14 @@ import { ListGroup, ListGroupItem } from 'reactstrap'
 import { SmallCard } from '../Card/Card'
 
 interface IUsersProps {
-  users: { name: string; vote?: string }[]
+  users: Record<string, string>
   hidden: boolean
 }
 
 export function Users({ users, hidden }: IUsersProps): JSX.Element {
   return (
     <ListGroup>
-      {users.map(({ name, vote }) => (
+      {Object.entries(users).map(([name, vote]) => (
         <ListGroupItem key={name}>
           {vote && (
             <SmallCard outline className="float-right">

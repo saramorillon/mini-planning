@@ -48,14 +48,14 @@ describe('Room', () => {
   it('should show "Reset" button when not voting', async () => {
     await renderAsync(<Room id="id" name="Toto" />)
     act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: [] }))
+    act(() => socketMock.emit('refresh', { voting: false, users: {}, votes: { total: 0 } }))
     expect(screen.getByText('Reset')).toBeInTheDocument()
   })
 
   it('should show inactive cards when not voting', async () => {
     await renderAsync(<Room id="id" name="Toto" />)
     act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: [] }))
+    act(() => socketMock.emit('refresh', { voting: false, users: {}, votes: { total: 0 } }))
     expect(screen.getByText('0')).toBeDisabled()
   })
 
@@ -79,7 +79,7 @@ describe('Room', () => {
     const emitSpy = jest.spyOn(socketMock, 'emit')
     await renderAsync(<Room id="id" name="Toto" />)
     act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: [] }))
+    act(() => socketMock.emit('refresh', { voting: false, users: {}, votes: { total: 0 } }))
     fireEvent.click(screen.getByText('Reset'))
     expect(emitSpy).toHaveBeenCalledWith('voting', true)
   })
@@ -87,14 +87,14 @@ describe('Room', () => {
   it('should refresh users', async () => {
     await renderAsync(<Room id="id" name="Toto" />)
     act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: [{ name: 'Titi' }] }))
+    act(() => socketMock.emit('refresh', { voting: false, users: { Titi: '' }, votes: { total: 1, '': 1 } }))
     expect(screen.getByText('Titi')).toBeInTheDocument()
   })
 
   it('should hide votes when voting', async () => {
     await renderAsync(<Room id="id" name="Toto" />)
     act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: true, users: [{ name: 'Titi', vote: '0' }] }))
+    act(() => socketMock.emit('refresh', { voting: true, users: { Titi: '0' }, votes: { total: 1, '0': 1 } }))
     expect(screen.getByText('✓')).toBeInTheDocument()
   })
 })
