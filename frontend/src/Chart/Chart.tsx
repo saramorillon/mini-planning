@@ -51,7 +51,7 @@ function VoteBar({ card, quantity, max }: { card: string; quantity: number; max:
   return (
     <div className="d-flex flex-column align-items-center">
       <Bg>
-        <Fg height={(quantity * 100) / max} />
+        <Fg data-testid={`votebar-fg-${card}`} height={(quantity * 100) / max} />
       </Bg>
       <b>{card}</b>
     </div>

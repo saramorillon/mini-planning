@@ -18,9 +18,7 @@ export function Room({ id, name }: IRoomProps): JSX.Element {
   useEffect(() => {
     axios.post(`/room/${id}`).then(() => {
       const socket = io(`/${id}`)
-      socket.on('connect', () => {
-        setSocket(socket)
-      })
+      socket.on('connect', () => setSocket(socket))
     })
   }, [id])
 
@@ -32,16 +30,9 @@ export function Room({ id, name }: IRoomProps): JSX.Element {
     })
   }, [socket, name])
 
-  const onClick = useCallback(() => {
-    socket?.emit('voting', !voting)
-  }, [socket, voting])
+  const onClick = useCallback(() => socket?.emit('voting', !voting), [socket, voting])
 
-  const onVote = useCallback(
-    (vote) => {
-      socket?.emit('vote', vote)
-    },
-    [socket]
-  )
+  const onVote = useCallback((vote) => socket?.emit('vote', vote), [socket])
 
   const vote = useMemo(() => users.find((user) => user.name === name)?.[1] || '', [name, users])
 
