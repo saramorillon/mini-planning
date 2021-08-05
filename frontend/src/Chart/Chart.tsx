@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { cards } from '../Cards/Cards'
+import { SmallCard } from '@src/Card/Card'
 
 interface IChartProps {
   votes: Record<string, number>
@@ -48,7 +49,10 @@ function VoteBar({ card, quantity = 0, max }: { card: string; quantity?: number;
       <Bg>
         <Fg data-testid={`votebar-fg-${card}`} height={(quantity * 100) / max} />
       </Bg>
-      <b>{card}</b>
+      <SmallCard outline className="mt-2">
+        {card}
+      </SmallCard>
+      <b>{quantity || ''}</b>
     </div>
   )
 }
