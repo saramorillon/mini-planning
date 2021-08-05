@@ -1,9 +1,10 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, Container, Jumbotron } from 'reactstrap'
+import { Container, Jumbotron } from 'reactstrap'
 import io from 'socket.io-client'
 import { Cards } from '../Cards/Cards'
 import { Result } from '../Result/Result'
+import { VoteButton } from '@src/VoteButton/VoteButton'
 
 interface IRoomProps {
   id: string
@@ -41,9 +42,7 @@ export function Room({ id, name }: IRoomProps): JSX.Element {
       <Jumbotron className="text-center">
         <h2>Choose a card</h2>
         <Cards vote={users[name]} onVote={onVote} active={voting} />
-        <Button color="primary" onClick={onClick}>
-          {voting ? 'Show votes' : 'Reset'}
-        </Button>
+        <VoteButton onClick={onClick} voting={voting} />
       </Jumbotron>
       <Container>
         <h2>Votes</h2>

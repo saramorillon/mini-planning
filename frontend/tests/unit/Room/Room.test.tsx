@@ -35,21 +35,9 @@ describe('Room', () => {
     expect(emitSpy).toHaveBeenCalledWith('join', 'Toto')
   })
 
-  it('should show "Show votes" button when voting', async () => {
-    await renderAsync(<Room id="id" name="Toto" />)
-    expect(screen.getByText('Show votes')).toBeInTheDocument()
-  })
-
   it('should show active cards when voting', async () => {
     await renderAsync(<Room id="id" name="Toto" />)
     expect(screen.getByText('0')).toBeEnabled()
-  })
-
-  it('should show "Reset" button when not voting', async () => {
-    await renderAsync(<Room id="id" name="Toto" />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: {}, votes: { total: 0 } }))
-    expect(screen.getByText('Reset')).toBeInTheDocument()
   })
 
   it('should show inactive cards when not voting', async () => {
