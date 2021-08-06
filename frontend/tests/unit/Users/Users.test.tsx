@@ -1,4 +1,4 @@
-import { Users } from '@src/Users/Users'
+import { Users } from '@src/ui/Users/Users'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 

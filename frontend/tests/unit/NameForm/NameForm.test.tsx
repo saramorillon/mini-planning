@@ -1,4 +1,4 @@
-import { NameForm } from '@src/NameForm/NameForm'
+import { NameForm } from '@src/ui/NameForm/NameForm'
 import { fireEvent, render, screen } from '@testing-library/react'
 import Fakerator from 'fakerator'
 import React from 'react'

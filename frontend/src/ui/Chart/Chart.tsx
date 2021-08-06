@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { cards } from '../Cards/Cards'
-import { SmallCard } from '@src/Card/Card'
+import { SmallCard } from '../Card/Card'
 
 interface IChartProps {
   votes: Record<string, number>

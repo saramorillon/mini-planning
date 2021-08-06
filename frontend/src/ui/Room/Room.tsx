@@ -4,7 +4,7 @@ import { Container, Jumbotron } from 'reactstrap'
 import io from 'socket.io-client'
 import { Cards } from '../Cards/Cards'
 import { Result } from '../Result/Result'
-import { VoteButton } from '@src/VoteButton/VoteButton'
+import { VoteButton } from '../VoteButton/VoteButton'
 
 interface IRoomProps {
   id: string

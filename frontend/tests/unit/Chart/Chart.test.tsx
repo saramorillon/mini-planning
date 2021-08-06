@@ -1,4 +1,4 @@
-import { Chart } from '@src/Chart/Chart'
+import { Chart } from '@src/ui/Chart/Chart'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 

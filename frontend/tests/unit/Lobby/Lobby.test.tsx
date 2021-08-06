@@ -1,4 +1,4 @@
-import { Lobby } from '@src/Lobby/Lobby'
+import { Lobby } from '@src/ui/Lobby/Lobby'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { router } from '@tests/wrappers'
 import axios from 'axios'

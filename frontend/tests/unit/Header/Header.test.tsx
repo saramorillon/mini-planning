@@ -1,4 +1,4 @@
-import { Header } from '@src/Header/Header'
+import { Header } from '@src/ui/Header/Header'
 import { render, screen } from '@testing-library/react'
 import { router } from '@tests/wrappers'
 import Cookies from 'js-cookie'
