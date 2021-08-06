@@ -1,9 +1,10 @@
 import React from 'react'
 import { Chart } from '../Chart/Chart'
 import { Users } from '../Users/Users'
+import { User } from '@src/models/User'
 
 interface IResultProps {
-  users: Record<string, string>
+  users: User[]
   votes: Record<string, number>
   hidden: boolean
 }

@@ -1,21 +1,19 @@
-import React, { useCallback, useState } from 'react'
-import { Button, Form, FormGroup, Input, Jumbotron } from 'reactstrap'
 import Fakerator from 'fakerator'
+import Cookies from 'js-cookie'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Button, Form, FormGroup, Input, Jumbotron, Label } from 'reactstrap'
 
-interface INameFormProps {
-  value: string
-  onChange: (value: string) => void
-}
-
-export function NameForm({ value, onChange }: INameFormProps): JSX.Element {
-  const [name, setName] = useState(value)
+export function NameForm(): JSX.Element {
+  const placeholder = useMemo(() => new Fakerator(navigator.language).names.firstName(), [])
+  const [name, setName] = useState('')
+  const [observer, setObserver] = useState(false)
 
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      onChange(name)
+      Cookies.set('name', JSON.stringify({ name, observer }))
     },
-    [name, onChange]
+    [name, observer]
   )
 
   return (
@@ -24,12 +22,13 @@ export function NameForm({ value, onChange }: INameFormProps): JSX.Element {
       <hr className="my-4" />
       <Form inline onSubmit={onSubmit}>
         <FormGroup className="mr-2">
-          <Input
-            type="text"
-            placeholder={new Fakerator(navigator.language).names.firstName()}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <Input type="text" placeholder={placeholder} value={name} onChange={(e) => setName(e.target.value)} />
+        </FormGroup>
+        <FormGroup className="mr-2" check>
+          <Label check>
+            <Input type="checkbox" checked={observer} onChange={(e) => setObserver(e.target.checked)} />
+            Observer
+          </Label>
         </FormGroup>
         <Button color="primary">Send</Button>
       </Form>

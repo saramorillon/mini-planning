@@ -26,16 +26,16 @@ describe('Socket', () => {
 
     it('should init client', () => {
       const socket = new Socket(namespaceMock, socketMock)
-      socket.onJoin('name')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', vote: '' } })
+      socket.onJoin({ name: 'name', observer: false })
+      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '' } })
     })
 
     it('should refresh clients', () => {
       const socket = new Socket(namespaceMock, socketMock)
-      socket.onJoin('name')
+      socket.onJoin({ name: 'name', observer: false })
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: { name: '' },
+        users: [{ name: 'name', observer: false, vote: '' }],
         votes: { '': 1, total: 1 },
       })
     })
@@ -47,13 +47,13 @@ describe('Socket', () => {
 
     beforeEach(() => {
       socketMock = mockSocket({ on: jest.fn() })
-      namespaceMock = mockNamespace({ clients: { id: { name: 'name', vote: '' } } })
+      namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
     })
 
     it('should set client vote', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onVote('5')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', vote: '5' } })
+      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '5' } })
     })
 
     it('should refresh clients', () => {
@@ -61,7 +61,7 @@ describe('Socket', () => {
       socket.onVote('5')
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: { name: '5' },
+        users: [{ name: 'name', observer: false, vote: '5' }],
         votes: { '5': 1, total: 1 },
       })
     })
@@ -73,7 +73,7 @@ describe('Socket', () => {
 
     beforeEach(() => {
       socketMock = mockSocket({ on: jest.fn() })
-      namespaceMock = mockNamespace({ clients: { id: { name: 'name', vote: '5' } } })
+      namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '5' } } })
     })
 
     it('should set namespace voting state', () => {
@@ -85,13 +85,13 @@ describe('Socket', () => {
     it('should not reset clients votes if voting is false', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onVoting(false)
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', vote: '5' } })
+      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '5' } })
     })
 
     it('should reset clients votes if voting is true', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onVoting(true)
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', vote: '' } })
+      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '' } })
     })
 
     it('should refresh clients if voting is false', () => {
@@ -99,7 +99,7 @@ describe('Socket', () => {
       socket.onVoting(false)
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: { name: '5' },
+        users: [{ name: 'name', observer: false, vote: '5' }],
         votes: { '5': 1, total: 1 },
       })
     })
@@ -109,7 +109,7 @@ describe('Socket', () => {
       socket.onVoting(true)
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: true,
-        users: { name: '' },
+        users: [{ name: 'name', observer: false, vote: '' }],
         votes: { '': 1, total: 1 },
       })
     })
@@ -121,7 +121,7 @@ describe('Socket', () => {
 
     beforeEach(() => {
       socketMock = mockSocket({ on: jest.fn() })
-      namespaceMock = mockNamespace({ clients: { id: { name: 'name', vote: '' } } })
+      namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
     })
 
     it('should remove socket from clients', () => {
@@ -133,7 +133,7 @@ describe('Socket', () => {
     it('should refresh clients', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onDisconnect()
-      expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', { voting: false, users: {}, votes: { total: 0 } })
+      expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', { voting: false, users: [], votes: { total: 0 } })
     })
   })
 
@@ -143,27 +143,27 @@ describe('Socket', () => {
       const namespaceMock = ({ clients: {}, emit: jest.fn() } as unknown) as Namespace
       const socket = new Socket(namespaceMock, socketMock)
       socket.vote('id', 'vote')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'Unknown', vote: 'vote' } })
+      expect(namespaceMock.clients).toEqual({ id: { name: 'Unknown', observer: false, vote: 'vote' } })
     })
 
     it('should set vote for client socket', () => {
       const socketMock = mockSocket({ on: jest.fn() })
-      const namespaceMock = mockNamespace({ clients: { id: { name: 'name', vote: '' } } })
+      const namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
       const socket = new Socket(namespaceMock, socketMock)
       socket.vote('id', 'vote')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', vote: 'vote' } })
+      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: 'vote' } })
     })
   })
 
   describe('refresh', () => {
     it('should refresh clients', () => {
       const socketMock = mockSocket({ on: jest.fn() })
-      const namespaceMock = mockNamespace({ clients: { id: { name: 'name', vote: '' } } })
+      const namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
       const socket = new Socket(namespaceMock, socketMock)
       socket.refresh()
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: { name: '' },
+        users: [{ name: 'name', observer: false, vote: '' }],
         votes: { '': 1, total: 1 },
       })
     })

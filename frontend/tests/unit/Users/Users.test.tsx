@@ -4,25 +4,38 @@ import React from 'react'
 
 describe('Users', () => {
   it('should show users name', () => {
-    render(<Users users={{ Toto: '', Titi: '' }} hidden />)
+    const users = [
+      { name: 'Toto', observer: false, vote: '' },
+      { name: 'Titi', observer: false, vote: '' },
+    ]
+    render(<Users users={users} hidden />)
     expect(screen.getByText('Toto')).toBeInTheDocument()
     expect(screen.getByText('Titi')).toBeInTheDocument()
   })
 
   it('should not show vote when user did not vote', () => {
-    render(<Users users={{ Toto: '' }} hidden />)
+    const users = [{ name: 'Toto', observer: false, vote: '' }]
+    render(<Users users={users} hidden />)
     expect(screen.queryByText('✓')).not.toBeInTheDocument()
   })
 
   it('should not show vote when hidden', () => {
-    render(<Users users={{ Toto: '0' }} hidden />)
+    const users = [{ name: 'Toto', observer: false, vote: '0' }]
+    render(<Users users={users} hidden />)
     expect(screen.getByText('✓')).toBeInTheDocument()
     expect(screen.queryByText('0')).not.toBeInTheDocument()
   })
 
   it('should show vote when not hidden', () => {
-    render(<Users users={{ Toto: '0' }} hidden={false} />)
+    const users = [{ name: 'Toto', observer: false, vote: '0' }]
+    render(<Users users={users} hidden={false} />)
     expect(screen.queryByText('✓')).not.toBeInTheDocument()
     expect(screen.getByText('0')).toBeInTheDocument()
+  })
+
+  it('should not show an eye when observer', () => {
+    const users = [{ name: 'Toto', observer: true, vote: '0' }]
+    render(<Users users={users} hidden />)
+    expect(screen.getByText('👁')).toBeInTheDocument()
   })
 })

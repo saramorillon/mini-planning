@@ -5,16 +5,17 @@ import io from 'socket.io-client'
 import { Cards } from '../Cards/Cards'
 import { Result } from '../Result/Result'
 import { VoteButton } from '../VoteButton/VoteButton'
+import { User } from '@src/models/User'
 
 interface IRoomProps {
   id: string
-  name: string
+  user: Omit<User, 'vote'>
 }
 
-export function Room({ id, name }: IRoomProps): JSX.Element {
+export function Room({ id, user }: IRoomProps): JSX.Element {
   const [socket, setSocket] = useState<SocketIOClient.Socket>()
   const [voting, setVoting] = useState(true)
-  const [users, setUsers] = useState<Record<string, string>>({})
+  const [users, setUsers] = useState<User[]>([])
   const [votes, setVotes] = useState<Record<string, number>>({})
 
   useEffect(() => {
@@ -25,23 +26,25 @@ export function Room({ id, name }: IRoomProps): JSX.Element {
   }, [id])
 
   useEffect(() => {
-    socket?.emit('join', name)
+    socket?.emit('join', user)
     socket?.on('refresh', ({ voting, users, votes }) => {
       setVoting(voting)
       setUsers(users)
       setVotes(votes)
     })
-  }, [socket, name])
+  }, [socket, user])
 
   const onClick = useCallback(() => socket?.emit('voting', !voting), [socket, voting])
 
   const onVote = useCallback((vote) => socket?.emit('vote', vote), [socket])
 
+  const { observer, vote } = users.find(({ name }) => name === user.name) || {}
+
   return (
     <>
       <Jumbotron className="text-center">
         <h2>Choose a card</h2>
-        <Cards vote={users[name]} onVote={onVote} active={voting} />
+        <Cards vote={vote} onVote={onVote} active={voting && !observer} />
         <VoteButton onClick={onClick} voting={voting} />
       </Jumbotron>
       <Container>

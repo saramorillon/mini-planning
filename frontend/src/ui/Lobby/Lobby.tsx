@@ -1,22 +1,16 @@
-import Cookies from 'js-cookie'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router'
 import { NameForm } from '../NameForm/NameForm'
 import { Room } from '../Room/Room'
+import { useUserContext } from '@src/contexts/UserContext'
 
 export function Lobby(): JSX.Element {
-  const [name, setName] = useState(Cookies.get('name') || '')
-
+  const user = useUserContext()
   const { id } = useParams<{ id: string }>()
 
-  const onChange = useCallback((name: string) => {
-    Cookies.set('name', name)
-    setName(name)
-  }, [])
-
-  if (!name) {
-    return <NameForm value={name} onChange={onChange} />
+  if (!user) {
+    return <NameForm />
   }
 
-  return <Room id={id} name={name} />
+  return <Room id={id} user={user} />
 }

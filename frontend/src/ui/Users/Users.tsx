@@ -1,20 +1,21 @@
 import React from 'react'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 import { SmallCard } from '../Card/Card'
+import { User } from '@src/models/User'
 
 interface IUsersProps {
-  users: Record<string, string>
+  users: User[]
   hidden: boolean
 }
 
 export function Users({ users, hidden }: IUsersProps): JSX.Element {
   return (
     <ListGroup>
-      {Object.entries(users).map(([name, vote]) => (
+      {users.map(({ name, observer, vote }) => (
         <ListGroupItem key={name}>
-          {vote && (
+          {(vote || observer) && (
             <SmallCard outline className="float-right">
-              {hidden ? '✓' : vote}
+              {observer ? '👁' : hidden ? '✓' : vote}
             </SmallCard>
           )}
           <h5>{name}</h5>

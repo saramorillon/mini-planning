@@ -16,8 +16,8 @@ export class Socket {
     socket.on('disconnect', this.onDisconnect)
   }
 
-  onJoin(name: string): void {
-    this.namespace.clients[this.socket.id] = { name, vote: '' }
+  onJoin(user: Omit<User, 'vote'>): void {
+    this.namespace.clients[this.socket.id] = { ...user, vote: '' }
     this.refresh()
   }
 
@@ -43,15 +43,15 @@ export class Socket {
 
   vote(socketId: string, vote: string): void {
     if (!this.namespace.clients[socketId]) {
-      this.namespace.clients[socketId] = { name: 'Unknown', vote: '' }
+      this.namespace.clients[socketId] = { name: 'Unknown', observer: false, vote: '' }
     }
     this.namespace.clients[socketId].vote = vote
   }
 
   refresh(): void {
-    const clients = Object.values(this.namespace.clients)
-    const users = clients.reduce((acc: Users, curr: User) => ({ ...acc, [curr.name]: curr.vote || '' }), {})
-    const votes = clients.reduce(
+    const users = Object.values(this.namespace.clients)
+    // const users = clients.reduce((acc: Users, curr: User) => ({ ...acc, [curr.name]: curr.vote || '' }), {})
+    const votes = users.reduce(
       (acc: Votes, curr: User) => ({
         ...acc,
         total: acc.total + 1,

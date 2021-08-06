@@ -1,10 +1,10 @@
-import Cookies from 'js-cookie'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Nav, Navbar, NavbarBrand, NavbarText, NavItem } from 'reactstrap'
+import { useUserContext } from '@src/contexts/UserContext'
 
 export function Header(): JSX.Element {
-  const name = Cookies.get('name')
+  const user = useUserContext()
 
   return (
     <header>
@@ -12,10 +12,10 @@ export function Header(): JSX.Element {
         <NavbarBrand tag={NavLink} to="/">
           <img src="/favicon.svg" /> Mini planning
         </NavbarBrand>
-        {name && (
+        {user && (
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavbarText>Hello {name}</NavbarText>
+              <NavbarText>Hello {user.name}</NavbarText>
             </NavItem>
           </Nav>
         )}
