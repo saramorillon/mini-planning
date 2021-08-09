@@ -21,6 +21,6 @@ describe('NameForm', () => {
     fireEvent.change(screen.getByPlaceholderText('Firstname'), { target: { value: 'Toto' } })
     fireEvent.click(screen.getByLabelText('Observer'))
     fireEvent.click(screen.getByText('Send'))
-    expect(Cookies.set).toHaveBeenCalledWith('name', '{"name":"Toto","observer":true}')
+    expect(Cookies.set).toHaveBeenCalledWith('user', '{"name":"Toto","observer":true}')
   })
 })

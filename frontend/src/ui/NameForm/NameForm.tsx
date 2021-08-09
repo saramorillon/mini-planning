@@ -11,7 +11,7 @@ export function NameForm(): JSX.Element {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      Cookies.set('name', JSON.stringify({ name, observer }))
+      Cookies.set('user', JSON.stringify({ name, observer }))
     },
     [name, observer]
   )

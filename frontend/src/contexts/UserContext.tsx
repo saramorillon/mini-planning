@@ -5,7 +5,7 @@ import { User } from '@src/models/User'
 const UserContext = createContext<Omit<User, 'vote'> | null>(null)
 
 export function UserProvider({ children }: PropsWithChildren<unknown>): JSX.Element {
-  const cookie = useCookie('name')
+  const cookie = useCookie('user')
   return <UserContext.Provider value={cookie ? JSON.parse(cookie) : null}>{children}</UserContext.Provider>
 }
 
