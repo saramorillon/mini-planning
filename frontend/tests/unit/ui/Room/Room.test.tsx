@@ -87,4 +87,38 @@ describe('Room', () => {
     act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
     expect(screen.getByText('✓')).toBeInTheDocument()
   })
+
+  it('should disable vote button when a voter did not vote yet', async () => {
+    const users = [
+      { name: 'Titi', observer: false, vote: '0' },
+      { name: 'Toto', observer: false, vote: '' },
+    ]
+    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
+    act(() => socketMock.emit('connect'))
+    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    expect(screen.getByText('Show votes')).toBeDisabled()
+  })
+
+  it('should enable vote button when all voters vote', async () => {
+    const users = [
+      { name: 'Titi', observer: false, vote: '0' },
+      { name: 'Toto', observer: false, vote: '2' },
+    ]
+    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
+    act(() => socketMock.emit('connect'))
+    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    expect(screen.getByText('Show votes')).toBeEnabled()
+  })
+
+  it('should enable vote button when all voters vote and an observer is present', async () => {
+    const users = [
+      { name: 'Titi', observer: false, vote: '0' },
+      { name: 'Toto', observer: false, vote: '2' },
+      { name: 'Tutu', observer: true, vote: '' },
+    ]
+    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
+    act(() => socketMock.emit('connect'))
+    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    expect(screen.getByText('Show votes')).toBeEnabled()
+  })
 })

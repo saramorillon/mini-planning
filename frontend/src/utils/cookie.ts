@@ -26,20 +26,22 @@ function getDiff(oldStr: string, newStr: string): CookieDiff {
   return diff
 }
 
-const nativeCookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie')
-Object.defineProperty(Document.prototype, '_cookie', nativeCookieDesc)
-Object.defineProperty(Document.prototype, 'cookie', {
-  enumerable: true,
-  configurable: true,
-  get() {
-    return this._cookie
-  },
-  set(value) {
-    const detail = getDiff(this._cookie, value)
-    if (Object.keys(detail).length) {
-      const event = new CustomEvent<CookieDiff>('cookiechange', { detail })
-      this.dispatchEvent(event)
-    }
-    this._cookie = value
-  },
-})
+export function registerCookieEvent(): void {
+  const nativeCookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie')
+  Object.defineProperty(Document.prototype, '_cookie', nativeCookieDesc)
+  Object.defineProperty(Document.prototype, 'cookie', {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return this._cookie
+    },
+    set(value) {
+      const detail = getDiff(this._cookie, value)
+      if (Object.keys(detail).length) {
+        const event = new CustomEvent<CookieDiff>('cookiechange', { detail })
+        this.dispatchEvent(event)
+      }
+      this._cookie = value
+    },
+  })
+}

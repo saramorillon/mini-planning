@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Container, Jumbotron } from 'reactstrap'
 import io from 'socket.io-client'
 import { Cards } from '../Cards/Cards'
@@ -39,13 +39,15 @@ export function Room({ id, user }: IRoomProps): JSX.Element {
   const onVote = useCallback((vote) => socket?.emit('vote', vote), [socket])
 
   const { observer, vote } = users.find(({ name }) => name === user.name) || {}
+  const voters = useMemo(() => users.filter((user) => !user.observer), [users])
+  const hasMissingVote = useMemo(() => voters.some((voter) => voter.vote === ''), [voters])
 
   return (
     <>
       <Jumbotron className="text-center">
         <h2>Choose a card</h2>
         <Cards vote={vote} onVote={onVote} active={voting && !observer} />
-        <VoteButton onClick={onClick} voting={voting} />
+        <VoteButton onClick={onClick} voting={voting} disabled={hasMissingVote} />
       </Jumbotron>
       <Container>
         <h2>Votes</h2>

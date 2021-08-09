@@ -1,4 +1,6 @@
-import '@src/utils/cookie'
+import { registerCookieEvent } from '@src/utils/cookie'
+
+registerCookieEvent()
 
 describe('cookie', () => {
   let spy: jest.SpyInstance

@@ -9,6 +9,11 @@ describe('VoteButton', () => {
     expect(screen.getByText('Reset')).toBeDisabled()
   })
 
+  it('should disable "Show votes" button when disabled is true', () => {
+    render(<VoteButton voting onClick={jest.fn()} disabled />)
+    expect(screen.getByText('Show votes')).toBeDisabled()
+  })
+
   it('should show "Reset" button when not voting', () => {
     render(<VoteButton voting={false} onClick={jest.fn()} />)
     expect(screen.getByText('Show votes')).toBeDisabled()

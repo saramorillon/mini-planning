@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie'
 import { useCallback, useEffect, useState } from 'react'
-import { CookieDiff } from '@src/utils/cookie'
+import { CookieDiff, registerCookieEvent } from '@src/utils/cookie'
+
+registerCookieEvent()
 
 export function useCookie(name: string): string {
   const [value, setValue] = useState(Cookies.get(name))
