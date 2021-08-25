@@ -1,7 +1,6 @@
 import io from 'socket.io'
 import { Namespace, User } from '@src/socket/namespace'
 
-type Users = Record<string, string>
 type Votes = Record<string, number>
 
 export class Socket {
@@ -17,12 +16,14 @@ export class Socket {
   }
 
   onJoin(user: Omit<User, 'vote'>): void {
+    const existingClient = this.namespace.findClient(user.name)
+    if (existingClient) this.namespace.disconnectSocket(existingClient)
     this.namespace.clients[this.socket.id] = { ...user, vote: '' }
     this.refresh()
   }
 
-  onVote(vote: string): void {
-    this.vote(this.socket.id, vote)
+  onVote(user: User): void {
+    this.vote(this.socket.id, user)
     this.refresh()
   }
 
@@ -30,7 +31,7 @@ export class Socket {
     this.namespace.voting = voting
     if (voting === true) {
       for (const socketId of Object.keys(this.namespace.clients)) {
-        this.vote(socketId, '')
+        this.vote(socketId, { ...this.namespace.clients[socketId], vote: '' })
       }
     }
     this.refresh()
@@ -41,11 +42,8 @@ export class Socket {
     this.refresh()
   }
 
-  vote(socketId: string, vote: string): void {
-    if (!this.namespace.clients[socketId]) {
-      this.namespace.clients[socketId] = { name: 'Unknown', observer: false, vote: '' }
-    }
-    this.namespace.clients[socketId].vote = vote
+  vote(socketId: string, user: User): void {
+    this.namespace.clients[socketId] = user
   }
 
   refresh(): void {

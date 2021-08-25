@@ -52,7 +52,7 @@ describe('Room', () => {
     await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
     act(() => socketMock.emit('connect'))
     fireEvent.click(screen.getByText('0'))
-    expect(emitSpy).toHaveBeenCalledWith('vote', '0')
+    expect(emitSpy).toHaveBeenCalledWith('vote', { name: 'Toto', observer: false, vote: '0' })
   })
 
   it('should emit voting event when clicking on "Show votes" button', async () => {

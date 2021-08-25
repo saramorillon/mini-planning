@@ -1,7 +1,7 @@
 import io from 'socket.io'
 import { Namespace } from '@src/socket/namespace'
 import { Socket } from '@src/socket/socket'
-import { mockNamespace, mockSocket } from '@tests/fixture'
+import { mockNamespace, mockIoSocket, mockUser } from '@tests/fixture'
 
 describe('Socket', () => {
   describe('constructor', () => {
@@ -20,14 +20,14 @@ describe('Socket', () => {
     let namespaceMock: Namespace
 
     beforeEach(() => {
-      socketMock = mockSocket({ on: jest.fn() })
+      socketMock = mockIoSocket({ on: jest.fn() })
       namespaceMock = mockNamespace()
     })
 
     it('should init client', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onJoin({ name: 'name', observer: false })
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '' } })
+      expect(namespaceMock.clients).toEqual({ id: mockUser() })
     })
 
     it('should refresh clients', () => {
@@ -35,7 +35,7 @@ describe('Socket', () => {
       socket.onJoin({ name: 'name', observer: false })
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: [{ name: 'name', observer: false, vote: '' }],
+        users: [mockUser()],
         votes: { '': 1, total: 1 },
       })
     })
@@ -46,22 +46,22 @@ describe('Socket', () => {
     let namespaceMock: Namespace
 
     beforeEach(() => {
-      socketMock = mockSocket({ on: jest.fn() })
-      namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
+      socketMock = mockIoSocket({ on: jest.fn() })
+      namespaceMock = mockNamespace({ clients: { id: mockUser() } })
     })
 
     it('should set client vote', () => {
       const socket = new Socket(namespaceMock, socketMock)
-      socket.onVote('5')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '5' } })
+      socket.onVote(mockUser({ vote: '5' }))
+      expect(namespaceMock.clients).toEqual({ id: mockUser({ vote: '5' }) })
     })
 
     it('should refresh clients', () => {
       const socket = new Socket(namespaceMock, socketMock)
-      socket.onVote('5')
+      socket.onVote(mockUser({ vote: '5' }))
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: [{ name: 'name', observer: false, vote: '5' }],
+        users: [mockUser({ vote: '5' })],
         votes: { '5': 1, total: 1 },
       })
     })
@@ -72,8 +72,8 @@ describe('Socket', () => {
     let namespaceMock: Namespace
 
     beforeEach(() => {
-      socketMock = mockSocket({ on: jest.fn() })
-      namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '5' } } })
+      socketMock = mockIoSocket({ on: jest.fn() })
+      namespaceMock = mockNamespace({ clients: { id: mockUser({ vote: '5' }) } })
     })
 
     it('should set namespace voting state', () => {
@@ -85,13 +85,13 @@ describe('Socket', () => {
     it('should not reset clients votes if voting is false', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onVoting(false)
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '5' } })
+      expect(namespaceMock.clients).toEqual({ id: mockUser({ vote: '5' }) })
     })
 
     it('should reset clients votes if voting is true', () => {
       const socket = new Socket(namespaceMock, socketMock)
       socket.onVoting(true)
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: '' } })
+      expect(namespaceMock.clients).toEqual({ id: mockUser() })
     })
 
     it('should refresh clients if voting is false', () => {
@@ -99,7 +99,7 @@ describe('Socket', () => {
       socket.onVoting(false)
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: [{ name: 'name', observer: false, vote: '5' }],
+        users: [mockUser({ vote: '5' })],
         votes: { '5': 1, total: 1 },
       })
     })
@@ -109,7 +109,7 @@ describe('Socket', () => {
       socket.onVoting(true)
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: true,
-        users: [{ name: 'name', observer: false, vote: '' }],
+        users: [mockUser()],
         votes: { '': 1, total: 1 },
       })
     })
@@ -120,8 +120,8 @@ describe('Socket', () => {
     let namespaceMock: Namespace
 
     beforeEach(() => {
-      socketMock = mockSocket({ on: jest.fn() })
-      namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
+      socketMock = mockIoSocket({ on: jest.fn() })
+      namespaceMock = mockNamespace({ clients: { id: mockUser() } })
     })
 
     it('should remove socket from clients', () => {
@@ -138,32 +138,24 @@ describe('Socket', () => {
   })
 
   describe('vote', () => {
-    it('should set client name to unknown when no socket', () => {
-      const socketMock = mockSocket({ on: jest.fn() })
-      const namespaceMock = ({ clients: {}, emit: jest.fn() } as unknown) as Namespace
+    it('should set user for client socket', () => {
+      const socketMock = mockIoSocket({ on: jest.fn() })
+      const namespaceMock = mockNamespace({ clients: { id: mockUser() } })
       const socket = new Socket(namespaceMock, socketMock)
-      socket.vote('id', 'vote')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'Unknown', observer: false, vote: 'vote' } })
-    })
-
-    it('should set vote for client socket', () => {
-      const socketMock = mockSocket({ on: jest.fn() })
-      const namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
-      const socket = new Socket(namespaceMock, socketMock)
-      socket.vote('id', 'vote')
-      expect(namespaceMock.clients).toEqual({ id: { name: 'name', observer: false, vote: 'vote' } })
+      socket.vote('id', mockUser({ vote: '8' }))
+      expect(namespaceMock.clients).toEqual({ id: mockUser({ vote: '8' }) })
     })
   })
 
   describe('refresh', () => {
     it('should refresh clients', () => {
-      const socketMock = mockSocket({ on: jest.fn() })
-      const namespaceMock = mockNamespace({ clients: { id: { name: 'name', observer: false, vote: '' } } })
+      const socketMock = mockIoSocket({ on: jest.fn() })
+      const namespaceMock = mockNamespace({ clients: { id: mockUser() } })
       const socket = new Socket(namespaceMock, socketMock)
       socket.refresh()
       expect(namespaceMock.emit).toHaveBeenCalledWith('refresh', {
         voting: false,
-        users: [{ name: 'name', observer: false, vote: '' }],
+        users: [mockUser()],
         votes: { '': 1, total: 1 },
       })
     })

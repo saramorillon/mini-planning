@@ -14,4 +14,13 @@ export class Namespace {
   }
 
   emit = this.namespace.emit.bind(this.namespace)
+
+  disconnectSocket(socketId: string): void {
+    const socket: io.Socket = this.namespace.sockets.get(socketId)
+    socket.disconnect()
+  }
+
+  findClient(name: string): string | undefined {
+    return Object.keys(this.clients).find((key) => this.clients[key].name === name)
+  }
 }

@@ -36,7 +36,7 @@ export function Room({ id, user }: IRoomProps): JSX.Element {
 
   const onClick = useCallback(() => socket?.emit('voting', !voting), [socket, voting])
 
-  const onVote = useCallback((vote) => socket?.emit('vote', vote), [socket])
+  const onVote = useCallback((vote) => socket?.emit('vote', { ...user, vote }), [user, socket])
 
   const { observer, vote } = users.find(({ name }) => name === user.name) || {}
   const voters = useMemo(() => users.filter((user) => !user.observer), [users])
