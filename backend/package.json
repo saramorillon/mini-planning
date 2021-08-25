@@ -11,7 +11,10 @@
     "start:dev": "nodemon -r dotenv/config --inspect=9999 src/index.ts",
     "test": "jest --runInBand",
     "format": "prettier 'src/**/*.{ts,tsx}' --write",
-    "lint": "eslint 'src/**/*.{ts,tsx}'"
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "docker:build": "docker build -t saramorillon/mini-planning .",
+    "docker:tag": "docker image tag saramorillon/mini-planning saramorillon/mini-planning:$npm_package_version",
+    "docker:push": "docker push saramorillon/mini-planning"
   },
   "dependencies": {
     "envalid": "^6.0.2",
