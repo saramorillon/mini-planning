@@ -12,9 +12,9 @@
     "test": "jest --runInBand",
     "format": "prettier 'src/**/*.{ts,tsx}' --write",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "docker:build": "docker build -t saramorillon/mini-planning .",
+    "docker:build": "docker build -t saramorillon/mini-planning -f ../Dockerfile ..",
     "docker:tag": "docker image tag saramorillon/mini-planning saramorillon/mini-planning:$npm_package_version",
-    "docker:push": "docker push saramorillon/mini-planning"
+    "docker:push": "docker push -a saramorillon/mini-planning"
   },
   "dependencies": {
     "envalid": "^6.0.2",
