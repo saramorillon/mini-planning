@@ -36,6 +36,6 @@ describe('Users', () => {
   it('should not show an eye when observer', () => {
     const users = [{ name: 'Toto', observer: true, vote: '0' }]
     render(<Users users={users} hidden />)
-    expect(screen.getByText('👁')).toBeInTheDocument()
+    expect(screen.getByText('👀')).toBeInTheDocument()
   })
 })

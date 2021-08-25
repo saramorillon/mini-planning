@@ -15,7 +15,7 @@ export function Users({ users, hidden }: IUsersProps): JSX.Element {
         <ListGroupItem key={name}>
           {(vote || observer) && (
             <SmallCard outline className="float-right">
-              {observer ? '👁' : hidden ? '✓' : vote}
+              {observer ? '👀' : hidden ? '✓' : vote}
             </SmallCard>
           )}
           <h5>{name}</h5>
