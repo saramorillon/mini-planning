@@ -20,7 +20,7 @@ export function Room({ id, user }: IRoomProps): JSX.Element {
 
   useEffect(() => {
     axios.post(`/room/${id}`).then(() => {
-      const socket = io(`/${id}`)
+      const socket = io(`/${id}`, { transports: ['polling'] })
       socket.on('connect', () => setSocket(socket))
     })
   }, [id])

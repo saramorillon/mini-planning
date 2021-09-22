@@ -6,7 +6,7 @@ export class IoService {
   static io: io.Server
 
   static init(server: http.Server): void {
-    this.io = new io.Server(server)
+    this.io = new io.Server(server, { transports: ['polling'] })
   }
 
   static initNamespace(namespace: string): void {
