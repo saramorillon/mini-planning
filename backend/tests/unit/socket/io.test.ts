@@ -14,7 +14,7 @@ describe('IoService', () => {
     it('should create new io server', () => {
       const httpServer = {} as http.Server
       IoService.init(httpServer)
-      expect(ioServerMock).toHaveBeenCalledWith(httpServer)
+      expect(ioServerMock).toHaveBeenCalledWith(httpServer, { transports: ['polling'] })
     })
   })
 
