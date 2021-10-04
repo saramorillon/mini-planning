@@ -19,7 +19,7 @@ describe('Room', () => {
 
   it('should connect to room namespace', async () => {
     await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    expect(io).toHaveBeenCalledWith('/id')
+    expect(io).toHaveBeenCalledWith('/id', { transports: ['polling'] })
   })
 
   it('should connect socket', async () => {

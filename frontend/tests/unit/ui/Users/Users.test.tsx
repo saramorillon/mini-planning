@@ -38,4 +38,13 @@ describe('Users', () => {
     render(<Users users={users} hidden />)
     expect(screen.getByText('👀')).toBeInTheDocument()
   })
+
+  it('should hover users with hovered vote', () => {
+    const users = [
+      { name: 'Toto', observer: true, vote: '0' },
+      { name: 'Tutu', observer: true, vote: '1' },
+    ]
+    render(<Users users={users} hidden={false} hovered="0" />)
+    expect(screen.getByText('Toto').parentElement).toHaveClass('list-group-item-info')
+  })
 })

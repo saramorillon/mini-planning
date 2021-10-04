@@ -58,8 +58,13 @@ interface IVoteBarProps {
 function VoteBar({ card, quantity = 0, max, setHovered }: IVoteBarProps) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <Bg onMouseEnter={() => setHovered(card)} onMouseLeave={() => setHovered(undefined)}>
-        <Fg data-testid={`votebar-fg-${card}`} height={(quantity * 100) / max} />
+      <Bg>
+        <Fg
+          data-testid={`votebar-fg-${card}`}
+          onMouseEnter={() => setHovered(card)}
+          onMouseLeave={() => setHovered(undefined)}
+          height={(quantity * 100) / max}
+        />
       </Bg>
       <SmallCard outline className="mt-2">
         {card}
