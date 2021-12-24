@@ -1,9 +1,14 @@
 {
   "name": "mini-planning",
   "version": "1.0.8",
+  "main": "index.js",
   "license": "MIT",
   "author": {
-    "name": "Sara Morillon"
+    "name": "Sara Morillon",
+    "url": "https://saramorillon.com/"
+  },
+  "repository": {
+    "url": "https://github.com/saramorillon/mini-git"
   },
   "scripts": {
     "build": "ttsc -b tsconfig.build.json",

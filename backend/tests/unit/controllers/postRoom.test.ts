@@ -1,5 +1,5 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { postRoom } from '@src/controllers/postRoom'
+import { postRoom } from '@src/controllers/room/postRoom'
 import { IoService } from '@src/socket/io'
 
 jest.mock('@src/socket/io')

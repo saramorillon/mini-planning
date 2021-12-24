@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Chart } from '../Chart/Chart'
-import { Users } from '../Users/Users'
 import { User } from '@src/models/User'
+import { Chart } from '@src/ui/components/Chart/Chart'
+import { Users } from '@src/ui/components/Users/Users'
 
 interface IResultProps {
   users: User[]
@@ -13,10 +13,8 @@ export function Result({ users, votes, hidden }: IResultProps): JSX.Element {
   const [hovered, setHoverd] = useState<string>()
 
   return (
-    <div className="d-flex mb-5">
-      <div className="flex-grow-1 mr-4">
-        <Users users={users} hidden={hidden} hovered={hovered} />
-      </div>
+    <div className="flex items-start">
+      <Users users={users} hidden={hidden} hovered={hovered} />
       <Chart votes={votes} hidden={hidden} setHovered={setHoverd} />
     </div>
   )

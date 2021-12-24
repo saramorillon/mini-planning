@@ -1,5 +1,5 @@
+import { Button } from '@blueprintjs/core'
 import React from 'react'
-import { Button } from 'reactstrap'
 
 interface IVoteButtonProps {
   onClick: (voting: boolean) => void
@@ -11,15 +11,16 @@ export function VoteButton({ onClick, voting, disabled }: IVoteButtonProps): JSX
   return (
     <>
       <Button
-        color="primary"
-        className="mr-3"
+        intent="primary"
+        className="mr3"
         disabled={disabled || !voting}
-        outline={!voting}
+        outlined={!voting}
         onClick={() => onClick(true)}
+        large
       >
         Show votes
       </Button>
-      <Button color="primary" disabled={voting} outline={voting} onClick={() => onClick(false)}>
+      <Button intent="primary" disabled={voting} outlined={voting} onClick={() => onClick(false)} large>
         Reset
       </Button>
     </>

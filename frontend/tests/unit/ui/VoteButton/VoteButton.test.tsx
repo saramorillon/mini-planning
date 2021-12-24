@@ -1,4 +1,4 @@
-import { VoteButton } from '@src/ui/VoteButton/VoteButton'
+import { VoteButton } from '@src/ui/components/VoteButton/VoteButton'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 

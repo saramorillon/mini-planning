@@ -48,13 +48,8 @@ export class Socket {
 
   refresh(): void {
     const users = Object.values(this.namespace.clients)
-    // const users = clients.reduce((acc: Users, curr: User) => ({ ...acc, [curr.name]: curr.vote || '' }), {})
     const votes = users.reduce(
-      (acc: Votes, curr: User) => ({
-        ...acc,
-        total: acc.total + 1,
-        [curr.vote]: (acc[curr.vote] || 0) + 1,
-      }),
+      (acc: Votes, curr: User) => ({ ...acc, total: acc.total + 1, [curr.vote]: (acc[curr.vote] || 0) + 1 }),
       { total: 0 }
     )
     this.namespace.emit('refresh', { voting: this.namespace.voting, users, votes })

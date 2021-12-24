@@ -1,11 +1,11 @@
+import { Callout } from '@blueprintjs/core'
 import axios from 'axios'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Container, Jumbotron } from 'reactstrap'
 import io from 'socket.io-client'
-import { Cards } from '../Cards/Cards'
-import { Result } from '../Result/Result'
-import { VoteButton } from '../VoteButton/VoteButton'
 import { User } from '@src/models/User'
+import { Cards } from '@src/ui/components/Cards/Cards'
+import { Result } from '@src/ui/components/Result/Result'
+import { VoteButton } from '@src/ui/components/VoteButton/VoteButton'
 
 interface IRoomProps {
   id: string
@@ -19,7 +19,7 @@ export function Room({ id, user }: IRoomProps): JSX.Element {
   const [votes, setVotes] = useState<Record<string, number>>({})
 
   useEffect(() => {
-    axios.post(`/room/${id}`).then(() => {
+    axios.post(`/api/room/${id}`).then(() => {
       const socket = io(`/${id}`, { transports: ['polling'] })
       socket.on('connect', () => setSocket(socket))
     })
@@ -27,11 +27,14 @@ export function Room({ id, user }: IRoomProps): JSX.Element {
 
   useEffect(() => {
     socket?.emit('join', user)
-    socket?.on('refresh', ({ voting, users, votes }) => {
-      setVoting(voting)
-      setUsers(users)
-      setVotes(votes)
-    })
+    socket?.on(
+      'refresh',
+      ({ voting, users, votes }: { voting: boolean; users: User[]; votes: Record<string, number> }) => {
+        setVoting(voting)
+        setUsers(users)
+        setVotes(votes)
+      }
+    )
   }, [socket, user])
 
   const onClick = useCallback(() => socket?.emit('voting', !voting), [socket, voting])
@@ -44,15 +47,15 @@ export function Room({ id, user }: IRoomProps): JSX.Element {
 
   return (
     <>
-      <Jumbotron className="text-center">
-        <h2>Choose a card</h2>
+      <Callout className="p4 center">
+        <h1>Choose a card</h1>
         <Cards vote={vote} onVote={onVote} active={voting && !observer} />
         <VoteButton onClick={onClick} voting={voting} disabled={hasMissingVote} />
-      </Jumbotron>
-      <Container>
+      </Callout>
+      <div className="mx-auto max-width-4">
         <h2>Votes</h2>
         <Result users={users} votes={votes} hidden={voting} />
-      </Container>
+      </div>
     </>
   )
 }

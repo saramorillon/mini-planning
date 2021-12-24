@@ -1,4 +1,4 @@
-import { Home } from '@src/ui/Home/Home'
+import { Home } from '@src/ui/pages/Home/Home'
 import { render, screen } from '@testing-library/react'
 import { router } from '@tests/wrappers'
 import React from 'react'

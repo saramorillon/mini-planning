@@ -6,10 +6,6 @@ module.exports = {
   chainWebpack: (config) => {
     config.resolve.plugin('paths').use(TsconfigPathsPlugin, [{ configFile }])
   },
-  plugins: [
-    {
-      resolve: '@poi/plugin-typescript',
-      options: { configFile },
-    },
-  ],
+  plugins: [{ resolve: '@poi/plugin-typescript', options: { configFile } }],
+  devServer: { proxy: { '/api': 'http://localhost:3000', '/socket.io': 'http://localhost:3000' } },
 }

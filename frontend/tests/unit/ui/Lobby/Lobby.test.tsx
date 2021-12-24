@@ -1,5 +1,5 @@
 import { useUserContext } from '@src/contexts/UserContext'
-import { Lobby } from '@src/ui/Lobby/Lobby'
+import { Lobby } from '@src/ui/pages/Lobby/Lobby'
 import { render, screen } from '@testing-library/react'
 import { router } from '@tests/wrappers'
 import axios from 'axios'

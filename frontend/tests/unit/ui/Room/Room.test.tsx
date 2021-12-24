@@ -1,4 +1,4 @@
-import { Room } from '@src/ui/Room/Room'
+import { Room } from '@src/ui/pages/Room/Room'
 import { fireEvent, screen } from '@testing-library/react'
 import { act, renderAsync } from '@tests/utils'
 import axios from 'axios'

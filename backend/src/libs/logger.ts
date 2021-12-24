@@ -1,7 +1,8 @@
 import path from 'path'
+import { types } from 'util'
 import { createLogger, format, transports } from 'winston'
-import { name } from 'package.json'
-import { config } from '@src/config'
+import { name } from '../../package.json'
+import { config } from '../config'
 
 const dirname = path.join(__dirname, '..', '..', 'logs')
 
@@ -22,7 +23,28 @@ function consoleTransport() {
 }
 
 export const logger = createLogger({
-  level: config.logLevel,
+  level: 'info',
   transports: [fileTransport(), consoleTransport()],
-  silent: config.environment === 'test',
+  silent: config.logSilent,
 })
+
+interface IAction {
+  success: () => void
+  failure: (error: unknown) => void
+}
+
+export function start(message: string, meta?: Record<string, unknown>): IAction {
+  logger.info(message, meta)
+
+  return {
+    success: () => logger.info(message + '_success', meta),
+    failure: (error) => logger.error(message + '_failure', { ...meta, error: parseError(error) }),
+  }
+}
+
+export function parseError(error: unknown): { message: string; stack?: string } {
+  if (types.isNativeError(error)) {
+    return { message: error.message, stack: error.stack }
+  }
+  return { message: String(error) }
+}
