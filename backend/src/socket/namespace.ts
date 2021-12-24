@@ -1,5 +1,5 @@
 import io from 'socket.io'
-import { Socket } from '@src/socket/socket'
+import { Socket } from './socket'
 
 export type User = { name: string; observer: boolean; vote: string }
 

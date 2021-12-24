@@ -1,6 +1,10 @@
 import { EventEmitter } from 'events'
 import io from 'socket.io'
-import { Namespace, User } from '@src/socket/namespace'
+import { Namespace, User } from '../src/socket/namespace'
+
+export function mock(fn: unknown): jest.Mock {
+  return fn as jest.Mock
+}
 
 export function mockNamespace(config?: Partial<Namespace>): Namespace {
   return ({
@@ -46,5 +50,5 @@ export function mockUser(config?: Partial<User>): User {
     observer: false,
     vote: '',
     ...config,
-  } as User
+  }
 }

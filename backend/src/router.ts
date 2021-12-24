@@ -1,6 +1,6 @@
 import express from 'express'
-import { getApp } from '@src/controllers/app/getApp'
-import { postRoom } from '@src/controllers/room/postRoom'
+import { getApp } from './controllers/app/getApp'
+import { postRoom } from './controllers/room/postRoom'
 
 export const router = express.Router()
 

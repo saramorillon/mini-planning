@@ -1,5 +1,5 @@
 import io from 'socket.io'
-import { Namespace, User } from '@src/socket/namespace'
+import { Namespace, User } from './namespace'
 
 type Votes = Record<string, number>
 

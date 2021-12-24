@@ -1,8 +1,5 @@
 {
   "include": ["src", "tests"],
-  "ts-node": {
-    "compiler": "ttypescript"
-  },
   "compilerOptions": {
     "lib": ["ES5", "ES6", "ESNext"],
     "target": "es5",
@@ -14,13 +11,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "strictPropertyInitialization": false,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "package.json": ["package.json"],
-      "@src/*": ["src/*"],
-      "@tests/*": ["tests/*"]
-    },
-    "plugins": [{ "transform": "typescript-transform-paths" }]
+    "outDir": "dist"
   }
 }

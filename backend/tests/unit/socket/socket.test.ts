@@ -1,7 +1,7 @@
 import io from 'socket.io'
-import { Namespace } from '@src/socket/namespace'
-import { Socket } from '@src/socket/socket'
-import { mockNamespace, mockIoSocket, mockUser } from '@tests/fixture'
+import { Namespace } from '../../../src/socket/namespace'
+import { Socket } from '../../../src/socket/socket'
+import { mockIoSocket, mockNamespace, mockUser } from '../../mocks'
 
 describe('Socket', () => {
   describe('constructor', () => {
@@ -22,6 +22,13 @@ describe('Socket', () => {
     beforeEach(() => {
       socketMock = mockIoSocket({ on: jest.fn() })
       namespaceMock = mockNamespace()
+    })
+
+    it('should disconnect client if client is already connected', () => {
+      const socket = new Socket(namespaceMock, socketMock)
+      namespaceMock.findClient = jest.fn().mockReturnValue('existing')
+      socket.onJoin({ name: 'name', observer: false })
+      expect(namespaceMock.disconnectSocket).toHaveBeenCalledWith('existing')
     })
 
     it('should init client', () => {

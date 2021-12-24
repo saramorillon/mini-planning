@@ -1,8 +1,8 @@
-import { Namespace } from '@src/socket/namespace'
-import { Socket } from '@src/socket/socket'
-import { mockIoNamespace, mockIoSocket, mockUser } from '@tests/fixture'
+import { Namespace } from '../../../src/socket/namespace'
+import { Socket } from '../../../src/socket/socket'
+import { mockIoNamespace, mockIoSocket, mockUser } from '../../mocks'
 
-jest.mock('@src/socket/socket')
+jest.mock('../../../src/socket/socket')
 
 describe('Namespace', () => {
   describe('constructor', () => {
