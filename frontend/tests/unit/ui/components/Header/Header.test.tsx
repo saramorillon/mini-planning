@@ -1,10 +1,10 @@
-import { useUserContext } from '@src/contexts/UserContext'
-import { Header } from '@src/ui/Header/Header'
 import { render, screen } from '@testing-library/react'
-import { router } from '@tests/wrappers'
 import React from 'react'
+import { useUserContext } from '../../../../../src/contexts/UserContext'
+import { Header } from '../../../../../src/ui/components/Header/Header'
+import { router } from '../../../../mocks'
 
-jest.mock('@src/contexts/UserContext')
+jest.mock('../../../../../src/contexts/UserContext')
 
 const useUserContextMock = useUserContext as jest.Mock
 

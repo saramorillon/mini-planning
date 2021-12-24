@@ -1,4 +1,4 @@
-import { registerCookieEvent } from '@src/utils/cookie'
+import { registerCookieEvent } from '../../../src/utils/cookie'
 
 registerCookieEvent()
 

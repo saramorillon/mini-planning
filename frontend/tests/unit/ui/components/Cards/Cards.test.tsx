@@ -1,6 +1,6 @@
-import { Cards } from '@src/ui/Cards/Cards'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
+import { Cards } from '../../../../../src/ui/components/Cards/Cards'
 
 describe('Cards', () => {
   it('should render a disabled card if active is false', () => {

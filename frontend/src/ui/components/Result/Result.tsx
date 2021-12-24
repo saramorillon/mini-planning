@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { User } from '@src/models/User'
-import { Chart } from '@src/ui/components/Chart/Chart'
-import { Users } from '@src/ui/components/Users/Users'
+import { User } from '../../../models/User'
+import { Chart } from '../Chart/Chart'
+import { Users } from '../Users/Users'
 
 interface IResultProps {
   users: User[]

@@ -1,13 +1,13 @@
-import { Room } from '@src/ui/pages/Room/Room'
-import { fireEvent, screen } from '@testing-library/react'
-import { act, renderAsync } from '@tests/utils'
+import { act, fireEvent, screen } from '@testing-library/react'
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import React from 'react'
 import io from 'socket.io-client'
+import { Room } from '../../../../../src/ui/pages/Room/Room'
+import { renderAsync } from '../../../../mocks'
 
 const axiosPostMock = axios.post as jest.Mock
-const ioMock = (io as unknown) as jest.Mock
+const ioMock = io as unknown as jest.Mock
 
 describe('Room', () => {
   let socketMock: EventEmitter
@@ -18,73 +18,95 @@ describe('Room', () => {
   })
 
   it('should connect to room namespace', async () => {
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
     expect(io).toHaveBeenCalledWith('/id', { transports: ['polling'] })
   })
 
   it('should connect socket', async () => {
     const onSpy = jest.spyOn(socketMock, 'on')
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
     expect(onSpy).toHaveBeenCalledWith('connect', expect.any(Function))
   })
 
   it('should join room', async () => {
     const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
     expect(emitSpy).toHaveBeenCalledWith('join', { name: 'Toto', observer: false })
   })
 
   it('should show active cards when voting', async () => {
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
     expect(screen.getByText('0')).toBeEnabled()
   })
 
   it('should show inactive cards when not voting', async () => {
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } })
+    })
     expect(screen.getByText('0')).toBeDisabled()
   })
 
   it('should emit vote event when clicking on card', async () => {
     const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
     fireEvent.click(screen.getByText('0'))
     expect(emitSpy).toHaveBeenCalledWith('vote', { name: 'Toto', observer: false, vote: '0' })
   })
 
   it('should emit voting event when clicking on "Show votes" button', async () => {
     const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
     fireEvent.click(screen.getByText('Show votes'))
     expect(emitSpy).toHaveBeenCalledWith('voting', false)
   })
 
   it('should emit voting event when clicking on "Reset" button', async () => {
     const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } })
+    })
     fireEvent.click(screen.getByText('Reset'))
     expect(emitSpy).toHaveBeenCalledWith('voting', true)
   })
 
   it('should refresh users', async () => {
     const users = [{ name: 'Titi', observer: false, vote: '' }]
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: false, users, votes: { total: 1, '': 1 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: false, users, votes: { total: 1, '': 1 } })
+    })
     expect(screen.getByText('Titi')).toBeInTheDocument()
   })
 
   it('should hide votes when voting', async () => {
     const users = [{ name: 'Titi', observer: false, vote: '0' }]
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
+    })
     expect(screen.getByText('✓')).toBeInTheDocument()
   })
 
@@ -93,9 +115,13 @@ describe('Room', () => {
       { name: 'Titi', observer: false, vote: '0' },
       { name: 'Toto', observer: false, vote: '' },
     ]
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
+    })
     expect(screen.getByText('Show votes')).toBeDisabled()
   })
 
@@ -104,9 +130,13 @@ describe('Room', () => {
       { name: 'Titi', observer: false, vote: '0' },
       { name: 'Toto', observer: false, vote: '2' },
     ]
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
+    })
     expect(screen.getByText('Show votes')).toBeEnabled()
   })
 
@@ -116,9 +146,13 @@ describe('Room', () => {
       { name: 'Toto', observer: false, vote: '2' },
       { name: 'Tutu', observer: true, vote: '' },
     ]
-    await renderAsync(<Room id="id" user={{ name: 'Toto', observer: false }} />)
-    act(() => socketMock.emit('connect'))
-    act(() => socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } }))
+    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+    act(() => {
+      socketMock.emit('connect')
+    })
+    act(() => {
+      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
+    })
     expect(screen.getByText('Show votes')).toBeEnabled()
   })
 })

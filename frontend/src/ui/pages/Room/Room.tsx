@@ -1,19 +1,20 @@
 import { Callout } from '@blueprintjs/core'
 import axios from 'axios'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import io from 'socket.io-client'
-import { User } from '@src/models/User'
-import { Cards } from '@src/ui/components/Cards/Cards'
-import { Result } from '@src/ui/components/Result/Result'
-import { VoteButton } from '@src/ui/components/VoteButton/VoteButton'
+import { useParams } from 'react-router-dom'
+import io, { Socket } from 'socket.io-client'
+import { User } from '../../../models/User'
+import { Cards } from '../../components/Cards/Cards'
+import { Result } from '../../components/Result/Result'
+import { VoteButton } from '../../components/VoteButton/VoteButton'
 
 interface IRoomProps {
-  id: string
   user: Omit<User, 'vote'>
 }
 
-export function Room({ id, user }: IRoomProps): JSX.Element {
-  const [socket, setSocket] = useState<SocketIOClient.Socket>()
+export function Room({ user }: IRoomProps): JSX.Element {
+  const { id } = useParams<{ id: string }>()
+  const [socket, setSocket] = useState<Socket>()
   const [voting, setVoting] = useState(true)
   const [users, setUsers] = useState<User[]>([])
   const [votes, setVotes] = useState<Record<string, number>>({})

@@ -1,6 +1,6 @@
-import { Users } from '@src/ui/Users/Users'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
+import { Users } from '../../../../../src/ui/components/Users/Users'
 
 describe('Users', () => {
   it('should show users name', () => {

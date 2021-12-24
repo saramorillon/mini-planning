@@ -2,7 +2,7 @@ import { Classes, Dialog, Icon } from '@blueprintjs/core'
 import { useTheme } from '@saramorillon/hooks'
 import c from 'classnames'
 import React from 'react'
-import { IApp } from '@src/models/App'
+import { IApp } from '../../../models/App'
 
 export interface IInfoProps {
   app: IApp

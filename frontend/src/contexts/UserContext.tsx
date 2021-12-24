@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react'
-import { useCookie } from '@src/hooks/useCookie'
-import { User } from '@src/models/User'
+import { useCookie } from '../hooks/useCookie'
+import { User } from '../models/User'
 
 const UserContext = createContext<Omit<User, 'vote'> | null>(null)
 

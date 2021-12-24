@@ -1,7 +1,7 @@
 import { HTMLTable } from '@blueprintjs/core'
 import React from 'react'
-import { User } from '@src/models/User'
-import { SmallCard } from '@src/ui/components/Card/Card'
+import { User } from '../../../models/User'
+import { SmallCard } from '../Card/Card'
 
 interface IUsersProps {
   users: User[]

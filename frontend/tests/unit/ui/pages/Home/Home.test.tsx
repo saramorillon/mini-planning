@@ -1,8 +1,8 @@
-import { Home } from '@src/ui/pages/Home/Home'
 import { render, screen } from '@testing-library/react'
-import { router } from '@tests/wrappers'
 import React from 'react'
 import { v4 } from 'uuid'
+import { Home } from '../../../../../src/ui/pages/Home/Home'
+import { router } from '../../../../mocks'
 
 const uuidMock = v4 as jest.Mock
 

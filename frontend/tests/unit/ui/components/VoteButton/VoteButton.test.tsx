@@ -1,6 +1,6 @@
-import { VoteButton } from '@src/ui/components/VoteButton/VoteButton'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
+import { VoteButton } from '../../../../../src/ui/components/VoteButton/VoteButton'
 
 describe('VoteButton', () => {
   it('should enable "Show votes" button when voting', () => {

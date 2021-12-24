@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Card } from '@src/ui/components/Card/Card'
+import { Card } from '../Card/Card'
 
 export const cards = ['0', '1', '2', '3', '5', '8', '13', '21', '?']
 

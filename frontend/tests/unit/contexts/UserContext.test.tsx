@@ -1,6 +1,6 @@
-import { UserProvider, useUserContext } from '@src/contexts/UserContext'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
+import { UserProvider, useUserContext } from '../../../src/contexts/UserContext'
 
 function MockComponent() {
   const cookie = useUserContext()

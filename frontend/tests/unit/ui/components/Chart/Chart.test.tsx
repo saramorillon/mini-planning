@@ -1,6 +1,6 @@
-import { Chart } from '@src/ui/Chart/Chart'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
+import { Chart } from '../../../../../src/ui/components/Chart/Chart'
 
 describe('Chart', () => {
   it('should show nothing when no votes', () => {

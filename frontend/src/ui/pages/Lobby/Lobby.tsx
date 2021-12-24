@@ -2,13 +2,11 @@ import { Button, Callout, Checkbox, Divider, InputGroup } from '@blueprintjs/cor
 import fakerator from 'fakerator'
 import Cookies from 'js-cookie'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useParams } from 'react-router'
-import { Room } from '@src/ui/pages/Room/Room'
-import { useUserContext } from '@src/contexts/UserContext'
+import { useUserContext } from '../../../contexts/UserContext'
+import { Room } from '../Room/Room'
 
 export function Lobby(): JSX.Element {
   const user = useUserContext()
-  const { id } = useParams<{ id: string }>()
 
   const placeholder = useMemo(() => fakerator(navigator.language).names.firstName(), [])
   const [name, setName] = useState('')
@@ -22,7 +20,7 @@ export function Lobby(): JSX.Element {
     [name, observer]
   )
 
-  if (user) return <Room id={id} user={user} />
+  if (user) return <Room user={user} />
 
   return (
     <Callout className="p4">

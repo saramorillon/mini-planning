@@ -2,8 +2,8 @@ import { Button, Callout, Classes } from '@blueprintjs/core'
 import { useFetch } from '@saramorillon/hooks'
 import c from 'classnames'
 import React, { useState } from 'react'
-import { getApp } from '@src/services/app'
-import { Info } from '@src/ui/components/Info/Info'
+import { getApp } from '../../../services/app'
+import { Info } from '../Info/Info'
 
 export function Footer(): JSX.Element | null {
   const [app] = useFetch(getApp, null)
