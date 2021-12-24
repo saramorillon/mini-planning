@@ -47,7 +47,7 @@ describe('Lobby', () => {
     render(<Lobby />)
     fireEvent.change(screen.getByPlaceholderText('Firstname'), { target: { value: 'Toto' } })
     fireEvent.click(screen.getByLabelText('Observer'))
-    fireEvent.click(screen.getByText('Send'))
+    fireEvent.click(screen.getByText('Enter room'))
     expect(Cookies.set).toHaveBeenCalledWith('user', '{"name":"Toto","observer":true}')
   })
 })

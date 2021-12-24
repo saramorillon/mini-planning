@@ -15,23 +15,30 @@ describe('Chart', () => {
 
   it('should not show quantities when hidden', () => {
     render(<Chart votes={{ total: 1, '0': 1 }} hidden setHovered={jest.fn()} />)
-    expect(screen.getByTestId('votebar-fg-0')).toHaveStyleRule('height', '0%')
+    expect(screen.getAllByRole('progressbar')[0]).toHaveAttribute('aria-valuenow', '0')
   })
 
   it('should show quantities when not hidden', () => {
     render(<Chart votes={{ total: 10, '0': 6, '1': 4 }} hidden={false} setHovered={jest.fn()} />)
-    expect(screen.getByTestId('votebar-fg-0')).toHaveStyleRule('height', '60%')
-    expect(screen.getByTestId('votebar-fg-1')).toHaveStyleRule('height', '40%')
-    expect(screen.getByText('6')).toBeInTheDocument()
-    expect(screen.getByText('4')).toBeInTheDocument()
+    expect(screen.getAllByRole('progressbar')[0]).toHaveAttribute('aria-valuenow', '60')
+    expect(screen.getAllByRole('progressbar')[1]).toHaveAttribute('aria-valuenow', '40')
+    expect(screen.getByText('6 / 10')).toBeInTheDocument()
+    expect(screen.getByText('4 / 10')).toBeInTheDocument()
   })
 
   it('should set hovered when hovering card', () => {
     const setHovered = jest.fn()
     render(<Chart votes={{ total: 10, '0': 6, '1': 4 }} hidden={false} setHovered={setHovered} />)
-    fireEvent.mouseEnter(screen.getByTestId('votebar-fg-0'))
+    fireEvent.mouseEnter(screen.getByText('0'))
     expect(setHovered).toHaveBeenCalledWith('0')
-    fireEvent.mouseLeave(screen.getByTestId('votebar-fg-0'))
+    fireEvent.mouseLeave(screen.getByText('0'))
     expect(setHovered).toHaveBeenCalledWith(undefined)
+  })
+
+  it('should set hovered when cliking card', () => {
+    const setHovered = jest.fn()
+    render(<Chart votes={{ total: 10, '0': 6, '1': 4 }} hidden={false} setHovered={setHovered} />)
+    fireEvent.click(screen.getByText('0'))
+    expect(setHovered).toHaveBeenCalledWith('0')
   })
 })

@@ -1,3 +1,4 @@
+import { Classes } from '@blueprintjs/core'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Users } from '../../../../../src/ui/components/Users/Users'
@@ -41,10 +42,10 @@ describe('Users', () => {
 
   it('should hover users with hovered vote', () => {
     const users = [
-      { name: 'Toto', observer: true, vote: '0' },
-      { name: 'Tutu', observer: true, vote: '1' },
+      { name: 'Toto', observer: false, vote: '0' },
+      { name: 'Tutu', observer: false, vote: '1' },
     ]
     render(<Users users={users} hidden={false} hovered="0" />)
-    expect(screen.getByText('Toto').parentElement).toHaveClass('list-group-item-info')
+    expect(screen.getByRole('button', { name: '0' })).toHaveClass(Classes.INTENT_PRIMARY)
   })
 })

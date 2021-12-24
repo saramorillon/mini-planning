@@ -2,19 +2,20 @@ import { act, fireEvent, screen } from '@testing-library/react'
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import io from 'socket.io-client'
 import { Room } from '../../../../../src/ui/pages/Room/Room'
-import { renderAsync } from '../../../../mocks'
+import { mock, renderAsync } from '../../../../mocks'
 
-const axiosPostMock = axios.post as jest.Mock
-const ioMock = io as unknown as jest.Mock
+jest.mock('react-router-dom')
 
 describe('Room', () => {
   let socketMock: EventEmitter
 
   beforeEach(() => {
-    ioMock.mockReturnValue((socketMock = new EventEmitter()))
-    axiosPostMock.mockResolvedValue(undefined)
+    mock(useParams).mockReturnValue({ id: 'id' })
+    mock(io).mockReturnValue((socketMock = new EventEmitter()))
+    mock(axios.post).mockResolvedValue(undefined)
   })
 
   it('should connect to room namespace', async () => {
@@ -39,7 +40,7 @@ describe('Room', () => {
 
   it('should show active cards when voting', async () => {
     await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    expect(screen.getByText('0')).toBeEnabled()
+    expect(screen.getByRole('button', { name: '0' })).toBeEnabled()
   })
 
   it('should show inactive cards when not voting', async () => {
@@ -50,7 +51,7 @@ describe('Room', () => {
     act(() => {
       socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } })
     })
-    expect(screen.getByText('0')).toBeDisabled()
+    expect(screen.getByRole('button', { name: '0' })).toBeDisabled()
   })
 
   it('should emit vote event when clicking on card', async () => {
@@ -122,7 +123,7 @@ describe('Room', () => {
     act(() => {
       socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
     })
-    expect(screen.getByText('Show votes')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Show votes' })).toBeDisabled()
   })
 
   it('should enable vote button when all voters vote', async () => {
@@ -137,7 +138,7 @@ describe('Room', () => {
     act(() => {
       socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
     })
-    expect(screen.getByText('Show votes')).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Show votes' })).toBeEnabled()
   })
 
   it('should enable vote button when all voters vote and an observer is present', async () => {
@@ -153,6 +154,6 @@ describe('Room', () => {
     act(() => {
       socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
     })
-    expect(screen.getByText('Show votes')).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Show votes' })).toBeEnabled()
   })
 })
