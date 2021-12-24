@@ -2,11 +2,13 @@
   "name": "frontend",
   "private": true,
   "scripts": {
-    "build": "poi --prod",
-    "serve": "poi --serve",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node src/index.js",
+    "start:dev": "nodemon -r dotenv/config --inspect=9999 src/index.ts",
     "test": "jest --runInBand",
-    "format": "prettier 'src/**/*.{ts,tsx}' --write",
-    "lint": "eslint 'src/**/*.{ts,tsx}'"
+    "test:ci": "yarn test --ci --coverage",
+    "format": "prettier \"src/**/*.{ts,tsx}\" --write",
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
   "devDependencies": {
     "@emotion/jest": "^11.7.1",
