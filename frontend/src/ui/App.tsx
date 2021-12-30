@@ -26,7 +26,7 @@ export function App(): JSX.Element | null {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/room/:id" element={<Lobby />} />
-                <Navigate to="/" />
+                <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </div>
             <Footer />

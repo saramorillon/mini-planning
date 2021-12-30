@@ -2,9 +2,8 @@
   "name": "frontend",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "start": "node src/index.js",
-    "start:dev": "nodemon -r dotenv/config --inspect=9999 src/index.ts",
+    "build": "poi --prod",
+    "serve": "poi --serve",
     "test": "jest --runInBand",
     "test:ci": "yarn test --ci --coverage",
     "format": "prettier \"src/**/*.{ts,tsx}\" --write",
