@@ -12,9 +12,9 @@ interface ICardsProps {
 export function Cards({ vote, onVote, active }: ICardsProps): JSX.Element {
   const onClick = useCallback(
     (card: string) => {
-      if (active) onVote(card)
+      onVote(card)
     },
-    [active, onVote]
+    [onVote]
   )
 
   return (

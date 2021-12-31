@@ -1,4 +1,5 @@
-import { Navbar, NavbarGroup, NavbarHeading } from '@blueprintjs/core'
+import { Classes, Navbar, NavbarGroup } from '@blueprintjs/core'
+import c from 'classnames'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
@@ -7,11 +8,9 @@ export function Header(): JSX.Element {
     <header>
       <Navbar>
         <NavbarGroup>
-          <NavbarHeading>
-            <NavLink to="/">
-              <img src="/favicon.svg" /> Mini Planning
-            </NavLink>
-          </NavbarHeading>
+          <NavLink to="/" className={c(Classes.NAVBAR_HEADING, 'flex items-center')}>
+            <img src="/favicon.svg" className="mr1" /> Mini Planning
+          </NavLink>
         </NavbarGroup>
       </Navbar>
     </header>

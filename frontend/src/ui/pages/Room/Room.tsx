@@ -14,33 +14,31 @@ interface IRoomProps {
 
 export function Room({ user }: IRoomProps): JSX.Element {
   const { id } = useParams<{ id: string }>()
-  const [socket, setSocket] = useState<Socket>()
+  const socket = useMemo<Socket>(() => io(`/${id}`, { transports: ['polling'] }), [id])
   const [voting, setVoting] = useState(true)
   const [users, setUsers] = useState<User[]>([])
   const [votes, setVotes] = useState<Record<string, number>>({})
 
   useEffect(() => {
-    axios.post(`/api/room/${id}`).then(() => {
-      const socket = io(`/${id}`, { transports: ['polling'] })
-      socket.on('connect', () => setSocket(socket))
-    })
+    axios.post(`/api/room/${id}`)
   }, [id])
 
   useEffect(() => {
-    socket?.emit('join', user)
-    socket?.on(
-      'refresh',
-      ({ voting, users, votes }: { voting: boolean; users: User[]; votes: Record<string, number> }) => {
-        setVoting(voting)
-        setUsers(users)
-        setVotes(votes)
-      }
-    )
+    socket.on('connect', () => {
+      socket.emit('join', user)
+      socket.on(
+        'refresh',
+        ({ voting, users, votes }: { voting: boolean; users: User[]; votes: Record<string, number> }) => {
+          setVoting(voting)
+          setUsers(users)
+          setVotes(votes)
+        }
+      )
+    })
   }, [socket, user])
 
-  const onClick = useCallback(() => socket?.emit('voting', !voting), [socket, voting])
-
-  const onVote = useCallback((vote) => socket?.emit('vote', { ...user, vote }), [user, socket])
+  const onClick = useCallback(() => socket.emit('voting', !voting), [socket, voting])
+  const onVote = useCallback((vote) => socket.emit('vote', { ...user, vote }), [user, socket])
 
   const { observer, vote } = users.find(({ name }) => name === user.name) || {}
   const voters = useMemo(() => users.filter((user) => !user.observer), [users])

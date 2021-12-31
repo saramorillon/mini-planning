@@ -1,4 +1,5 @@
 import io from 'socket.io'
+import { logger } from '../libs/logger'
 import { Namespace, User } from './namespace'
 
 type Votes = Record<string, number>
@@ -15,39 +16,38 @@ export class Socket {
     socket.on('disconnect', this.onDisconnect)
   }
 
-  onJoin(user: Omit<User, 'vote'>): void {
-    const existingClient = this.namespace.findClient(user.name)
-    if (existingClient) this.namespace.disconnectSocket(existingClient)
-    this.namespace.clients[this.socket.id] = { ...user, vote: '' }
+  private onJoin(user: Omit<User, 'vote'>) {
+    logger.info('user_join', { room: this.namespace.namespace.name, user })
+    this.namespace.kickUser(user.name)
+    this.namespace.setClient(this.socket.id, { ...user, vote: '' })
     this.refresh()
   }
 
-  onVote(user: User): void {
-    this.vote(this.socket.id, user)
+  private onVote(user: User) {
+    logger.info('user_vote', { room: this.namespace.namespace.name, user })
+    this.namespace.setClient(this.socket.id, user)
     this.refresh()
   }
 
-  onVoting(voting: boolean): void {
+  private onVoting(voting: boolean) {
     this.namespace.voting = voting
     if (voting === true) {
-      for (const socketId of Object.keys(this.namespace.clients)) {
-        this.vote(socketId, { ...this.namespace.clients[socketId], vote: '' })
+      for (const user of Object.values(this.namespace.getClients())) {
+        user.vote = ''
       }
     }
     this.refresh()
   }
 
-  onDisconnect(): void {
-    delete this.namespace.clients[this.socket.id]
+  private onDisconnect() {
+    const user = this.namespace.getClient(this.socket.id)
+    logger.info('user_disconnect', { room: this.namespace.namespace.name, user })
+    this.namespace.deleteClient(this.socket.id)
     this.refresh()
   }
 
-  vote(socketId: string, user: User): void {
-    this.namespace.clients[socketId] = user
-  }
-
-  refresh(): void {
-    const users = Object.values(this.namespace.clients)
+  private refresh() {
+    const users = Object.values(this.namespace.getClients())
     const votes = users.reduce(
       (acc: Votes, curr: User) => ({ ...acc, total: acc.total + 1, [curr.vote]: (acc[curr.vote] || 0) + 1 }),
       { total: 0 }

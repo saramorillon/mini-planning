@@ -5,12 +5,10 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "sourceMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "strictPropertyInitialization": false,
-    "outDir": "dist"
+    "outDir": "dist",
+    "strict": true
   }
 }

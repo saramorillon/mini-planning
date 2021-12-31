@@ -6,26 +6,19 @@ export function mock(fn: unknown): jest.Mock {
   return fn as jest.Mock
 }
 
-export function mockNamespace(config?: Partial<Namespace>): Namespace {
-  return ({
-    voting: false,
-    clients: {},
-    emit: jest.fn(),
-    disconnectSocket: jest.fn(),
-    findClient: jest.fn(),
-    ...config,
-  } as unknown) as Namespace
+export function mockNamespace(clients: Record<string, User> = {}): Namespace {
+  const namespaceMock = new Namespace(mockIoNamespace())
+  jest.spyOn(namespaceMock, 'kickUser')
+  jest.spyOn(namespaceMock, 'emit')
+  namespaceMock.voting = false
+  namespaceMock['clients'] = clients
+  return namespaceMock
 }
 
-export function mockIoNamespace(config?: Partial<io.Namespace>): io.Namespace {
-  const eventEmitter = new EventEmitter()
-  if (config) {
-    for (const key of Object.keys(config)) {
-      eventEmitter[key] = config[key]
-    }
-  }
-  eventEmitter['sockets'] = new Map()
-  return eventEmitter as io.Namespace
+export function mockIoNamespace(entries?: [string, io.Socket][]): io.Namespace {
+  const emitter = new EventEmitter()
+  Object.defineProperty(emitter, 'sockets', { value: new Map(entries) })
+  return emitter as io.Namespace
 }
 
 export function mockIoSocket(config?: Partial<io.Socket>): io.Socket {
