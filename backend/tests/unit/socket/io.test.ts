@@ -1,11 +1,11 @@
 import http from 'http'
 import io from 'socket.io'
-import { IoService } from '@src/socket/io'
-import { Namespace } from '@src/socket/namespace'
-import { mockIo } from '@tests/fixture'
+import { IoService } from '../../../src/socket/io'
+import { Namespace } from '../../../src/socket/namespace'
+import { mockIo } from '../../mocks'
 
 jest.mock('socket.io')
-jest.mock('@src/socket/namespace')
+jest.mock('../../../src/socket/namespace')
 
 const ioServerMock = (io.Server as unknown) as jest.Mock
 

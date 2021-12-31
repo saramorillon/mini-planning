@@ -1,6 +1,6 @@
-import { useCookie } from '@src/hooks/useCookie'
 import { fireEvent } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
+import { useCookie } from '../../../src/hooks/useCookie'
 
 describe('useCookie', () => {
   it('should change value on cookie change', () => {

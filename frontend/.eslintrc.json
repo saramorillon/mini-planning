@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "@mini-utils/eslint-config-typescript",
+    "@mini-utils/eslint-config-typescript/react",
+    "@mini-utils/eslint-config-typescript/jest",
+    "@mini-utils/eslint-config-typescript/jest-react"
+  ],
+  "rules": {
+    "import/no-named-as-default-member": "off",
+    "import/no-named-as-default": "off",
+    "import/default": "off"
+  }
+}

@@ -28,7 +28,9 @@ function getDiff(oldStr: string, newStr: string): CookieDiff {
 
 export function registerCookieEvent(): void {
   const nativeCookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie')
-  Object.defineProperty(Document.prototype, '_cookie', nativeCookieDesc)
+  if (nativeCookieDesc) {
+    Object.defineProperty(Document.prototype, '_cookie', nativeCookieDesc)
+  }
   Object.defineProperty(Document.prototype, 'cookie', {
     enumerable: true,
     configurable: true,

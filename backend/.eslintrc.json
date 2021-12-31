@@ -1,0 +1,7 @@
+{
+  "extends": ["@mini-utils/eslint-config-typescript", "@mini-utils/eslint-config-typescript/jest"],
+  "rules": {
+    "import/no-named-as-default-member": "off",
+    "import/default": "off"
+  }
+}

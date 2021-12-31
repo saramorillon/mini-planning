@@ -1,10 +1,8 @@
 import express from 'express'
-import { postRoom } from '@src/controllers/postRoom'
-import { renderFront } from '@src/controllers/renderFront'
-import { getVersion } from '@src/controllers/getVersion'
+import { getApp } from './controllers/app/getApp'
+import { postRoom } from './controllers/room/postRoom'
 
 export const router = express.Router()
 
-router.get('/version', getVersion)
-router.get('*', renderFront)
+router.get('/app', getApp)
 router.post('/room/:id', postRoom)

@@ -3,12 +3,9 @@ module.exports = {
   clearMocks: true,
   resetMocks: true,
   restoreMocks: true,
-  modulePathIgnorePatterns: ['<rootDir>/dist/'],
   testEnvironment: 'jsdom',
+  modulePathIgnorePatterns: ['dist'],
+  coveragePathIgnorePatterns: ['mocks'],
   testMatch: ['<rootDir>/tests/**/*.test.ts*'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
-  moduleNameMapper: {
-    '@src/(.*)': '<rootDir>/src/$1',
-    '@tests/(.*)': '<rootDir>/tests/$1',
-  },
 }

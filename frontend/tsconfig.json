@@ -1,6 +1,7 @@
 {
   "include": ["src", "tests"],
   "compilerOptions": {
+    "outDir": "dist",
     "target": "es5",
     "module": "commonjs",
     "lib": ["dom"],
@@ -8,11 +9,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "@src/*": ["src/*"],
-      "@tests/*": ["tests/*"]
-    }
+    "strict": true,
+    "skipLibCheck": true
   }
 }
