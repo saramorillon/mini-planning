@@ -1,36 +1,50 @@
 import http from 'http'
 import io from 'socket.io'
 import { IoService } from '../../../src/socket/io'
-import { Namespace } from '../../../src/socket/namespace'
-import { mockIo } from '../../mocks'
+import { Room } from '../../../src/socket/room'
+import { mock } from '../../mocks'
 
 jest.mock('socket.io')
-jest.mock('../../../src/socket/namespace')
-
-const ioServerMock = (io.Server as unknown) as jest.Mock
+jest.mock('../../../src/socket/room')
 
 describe('IoService', () => {
   describe('init', () => {
     it('should create new io server', () => {
       const httpServer = {} as http.Server
       IoService.init(httpServer)
-      expect(ioServerMock).toHaveBeenCalledWith(httpServer, { transports: ['polling'] })
+      expect(io.Server).toHaveBeenCalledWith(httpServer, { transports: ['polling'] })
     })
   })
 
-  describe('initNamespace', () => {
+  describe('initRoom', () => {
     it('should init namespace if it does not exist', () => {
-      ioServerMock.mockReturnValue(mockIo('namespace'))
+      mock(io.Server).mockReturnValue({ _nsps: { has: jest.fn().mockReturnValue(false) } })
       IoService.init({} as http.Server)
-      IoService.initNamespace('name')
-      expect(Namespace).toHaveBeenCalledWith('namespace')
+      IoService.initRoom('name')
+      expect(Room).toHaveBeenCalledWith('name')
     })
 
     it('should not init namespace if it already exists', () => {
-      ioServerMock.mockReturnValue(mockIo())
+      mock(io.Server).mockReturnValue({ _nsps: { has: jest.fn().mockReturnValue(true) } })
       IoService.init({} as http.Server)
-      IoService.initNamespace('name')
-      expect(Namespace).not.toHaveBeenCalled()
+      IoService.initRoom('name')
+      expect(Room).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('createNamespace', () => {
+    it('should create namespace', () => {
+      mock(io.Server).mockReturnValue({ of: jest.fn() })
+      IoService.init({} as http.Server)
+      IoService.createNamespace('name')
+      expect(IoService.io.of).toHaveBeenCalledWith('name')
+    })
+
+    it('should return namespace', () => {
+      mock(io.Server).mockReturnValue({ of: jest.fn() })
+      IoService.init({} as http.Server)
+      IoService.createNamespace('name')
+      expect(IoService.io.of).toHaveBeenCalledWith('name')
     })
   })
 })

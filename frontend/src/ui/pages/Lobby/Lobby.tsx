@@ -1,23 +1,26 @@
 import { Button, Callout, Checkbox, Divider, InputGroup } from '@blueprintjs/core'
-import fakerator from 'fakerator'
-import Cookies from 'js-cookie'
-import React, { useCallback, useMemo, useState } from 'react'
-import { useUserContext } from '../../../contexts/UserContext'
+import React, { useCallback, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useUser } from '../../../hooks/useUser'
 import { Room } from '../Room/Room'
 
 export function Lobby(): JSX.Element {
-  const user = useUserContext()
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const user = useUser()
 
-  const placeholder = useMemo(() => fakerator(navigator.language).names.firstName(), [])
   const [name, setName] = useState('')
   const [observer, setObserver] = useState(false)
 
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      Cookies.set('user', JSON.stringify({ name, observer }))
+      const search = new URLSearchParams()
+      search.set('name', name)
+      search.set('observer', observer.toString())
+      navigate(`${pathname}?${search}`)
     },
-    [name, observer]
+    [navigate, pathname, name, observer]
   )
 
   if (user) return <Room user={user} />
@@ -30,7 +33,7 @@ export function Lobby(): JSX.Element {
         <InputGroup
           large
           type="text"
-          placeholder={placeholder}
+          placeholder="Enter your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

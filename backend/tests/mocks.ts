@@ -1,47 +1,27 @@
 import { EventEmitter } from 'events'
-import io from 'socket.io'
-import { Namespace, User } from '../src/socket/namespace'
+import { Namespace, Socket } from 'socket.io'
+import { User } from '../src/socket/room'
 
 export function mock(fn: unknown): jest.Mock {
   return fn as jest.Mock
 }
 
-export function mockNamespace(clients: Record<string, User> = {}): Namespace {
-  const namespaceMock = new Namespace(mockIoNamespace())
-  jest.spyOn(namespaceMock, 'kickUser')
-  jest.spyOn(namespaceMock, 'emit')
-  namespaceMock.voting = false
-  namespaceMock['clients'] = clients
-  return namespaceMock
-}
-
-export function mockIoNamespace(entries?: [string, io.Socket][]): io.Namespace {
+export function mockNamespace(): Namespace {
   const emitter = new EventEmitter()
-  Object.defineProperty(emitter, 'sockets', { value: new Map(entries) })
-  return emitter as io.Namespace
+  jest.spyOn(emitter, 'on')
+  jest.spyOn(emitter, 'emit')
+  Object.defineProperty(emitter, 'name', { value: '/test' })
+  return emitter as Namespace
 }
 
-export function mockIoSocket(config?: Partial<io.Socket>): io.Socket {
-  return {
-    id: 'id',
-    on: jest.fn(),
-    disconnect: jest.fn(),
-    ...config,
-  } as io.Socket
-}
-
-export function mockIo(namespace?: string): io.Server {
-  return ({
-    _nsps: { has: jest.fn().mockReturnValue(!namespace) },
-    of: jest.fn().mockReturnValue(namespace),
-  } as unknown) as io.Server
+export function mockSocket(): Socket {
+  const emitter = new EventEmitter()
+  jest.spyOn(emitter, 'on')
+  jest.spyOn(emitter, 'emit')
+  Object.defineProperty(emitter, 'id', { value: 'id' })
+  return emitter as Socket
 }
 
 export function mockUser(config?: Partial<User>): User {
-  return {
-    name: 'name',
-    observer: false,
-    vote: '',
-    ...config,
-  }
+  return { name: 'name', observer: false, vote: '', ...config }
 }

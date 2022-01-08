@@ -1,6 +1,6 @@
 import http from 'http'
-import io from 'socket.io'
-import { Namespace } from './namespace'
+import io, { Namespace } from 'socket.io'
+import { Room } from './room'
 
 export class IoService {
   static io: io.Server
@@ -9,9 +9,13 @@ export class IoService {
     this.io = new io.Server(server, { transports: ['polling'] })
   }
 
-  static initNamespace(namespace: string): void {
+  static initRoom(namespace: string): void {
     if (!this.io._nsps.has(namespace)) {
-      new Namespace(IoService.io.of(namespace))
+      new Room(namespace)
     }
+  }
+
+  static createNamespace(namespace: string): Namespace {
+    return this.io.of(namespace)
   }
 }

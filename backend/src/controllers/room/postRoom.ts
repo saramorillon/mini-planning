@@ -6,7 +6,7 @@ export function postRoom(req: Request, res: Response): void {
   const namespace = `/${req.params.id}`
   const { success, failure } = start('post_room', { namespace })
   try {
-    IoService.initNamespace(namespace)
+    IoService.initRoom(namespace)
     res.sendStatus(204)
     success()
   } catch (error) {

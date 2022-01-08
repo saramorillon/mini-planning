@@ -1,8 +1,12 @@
-import express from 'express'
+import { Router } from 'express'
 import { getApp } from './controllers/app/getApp'
 import { postRoom } from './controllers/room/postRoom'
 
-export const router = express.Router()
+export function router(): Router {
+  const router = Router()
 
-router.get('/app', getApp)
-router.post('/room/:id', postRoom)
+  router.get('/app', getApp)
+  router.post('/room/:id', postRoom)
+
+  return router
+}

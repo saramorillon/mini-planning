@@ -1,10 +1,11 @@
 import { ProgressBar } from '@blueprintjs/core'
 import React, { Dispatch, SetStateAction } from 'react'
+import { Votes } from '../../../utils/getVotes'
 import { SmallCard } from '../Card/Card'
 import { cards } from '../Cards/Cards'
 
 interface IChartProps {
-  votes: Record<string, number>
+  votes: Votes
   hidden: boolean
   setHovered: Dispatch<SetStateAction<string | undefined>>
 }

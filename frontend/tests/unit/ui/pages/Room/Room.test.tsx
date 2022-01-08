@@ -1,159 +1,96 @@
-import { act, fireEvent, screen } from '@testing-library/react'
-import axios from 'axios'
-import { EventEmitter } from 'events'
+import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import io from 'socket.io-client'
+import { IRoomProps, useRoomSocket } from '../../../../../src/hooks/useRoomSocket'
 import { Room } from '../../../../../src/ui/pages/Room/Room'
-import { mock, renderAsync } from '../../../../mocks'
+import { mock } from '../../../../mocks'
 
-jest.mock('react-router-dom')
+jest.mock('../../../../../src/hooks/useRoomSocket')
+
+function mockRoomSocket(props?: Partial<IRoomProps>): IRoomProps {
+  const roomPropsMock = {
+    voting: false,
+    users: [],
+    vote: '',
+    canShowVotes: false,
+    onChangeStatus: jest.fn(),
+    onVote: jest.fn(),
+    ...props,
+  }
+  mock(useRoomSocket).mockReturnValue(roomPropsMock)
+  return roomPropsMock
+}
 
 describe('Room', () => {
-  let socketMock: EventEmitter
-
   beforeEach(() => {
-    mock(useParams).mockReturnValue({ id: 'id' })
-    mock(io).mockReturnValue((socketMock = new EventEmitter()))
-    mock(axios.post).mockResolvedValue(undefined)
+    mockRoomSocket()
   })
 
-  it('should connect to room namespace', async () => {
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    expect(io).toHaveBeenCalledWith('/id', { transports: ['polling'] })
-  })
-
-  it('should connect socket', async () => {
-    const onSpy = jest.spyOn(socketMock, 'on')
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    expect(onSpy).toHaveBeenCalledWith('connect', expect.any(Function))
-  })
-
-  it('should join room', async () => {
-    const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    expect(emitSpy).toHaveBeenCalledWith('join', { name: 'Toto', observer: false })
-  })
-
-  it('should show active cards when voting', async () => {
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
+  it('should show active cards when voting', () => {
+    mockRoomSocket({ voting: true })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     expect(screen.getByRole('button', { name: '0' })).toBeEnabled()
   })
 
-  it('should show inactive cards when not voting', async () => {
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } })
-    })
+  it('should show inactive cards when not voting', () => {
+    mockRoomSocket({ voting: false })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     expect(screen.getByRole('button', { name: '0' })).toBeDisabled()
   })
 
-  it('should emit vote event when clicking on card', async () => {
-    const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
+  it('should vote when clicking on card', () => {
+    const roomPropsMock = mockRoomSocket({ voting: true })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     fireEvent.click(screen.getByText('0'))
-    expect(emitSpy).toHaveBeenCalledWith('vote', { name: 'Toto', observer: false, vote: '0' })
+    expect(roomPropsMock.onVote).toHaveBeenCalledWith('0')
   })
 
-  it('should emit voting event when clicking on "Show votes" button', async () => {
-    const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
+  it('should change voting status when clicking on "Show votes" button', () => {
+    const roomPropsMock = mockRoomSocket({ voting: true, canShowVotes: true })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     fireEvent.click(screen.getByText('Show votes'))
-    expect(emitSpy).toHaveBeenCalledWith('voting', false)
+    expect(roomPropsMock.onChangeStatus).toHaveBeenCalled()
   })
 
-  it('should emit voting event when clicking on "Reset" button', async () => {
-    const emitSpy = jest.spyOn(socketMock, 'emit')
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: false, users: [], votes: { total: 0 } })
-    })
+  it('should change voting status when clicking on "Reset" button', () => {
+    const roomPropsMock = mockRoomSocket()
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     fireEvent.click(screen.getByText('Reset'))
-    expect(emitSpy).toHaveBeenCalledWith('voting', true)
+    expect(roomPropsMock.onChangeStatus).toHaveBeenCalled()
   })
 
-  it('should refresh users', async () => {
-    const users = [{ name: 'Titi', observer: false, vote: '' }]
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: false, users, votes: { total: 1, '': 1 } })
-    })
-    expect(screen.getByText('Titi')).toBeInTheDocument()
-  })
-
-  it('should hide votes when voting', async () => {
-    const users = [{ name: 'Titi', observer: false, vote: '0' }]
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
-    })
+  it('should hide votes when voting', () => {
+    mockRoomSocket({ voting: true, users: [{ name: 'Titi', observer: false, vote: '0' }] })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     expect(screen.getByText('✓')).toBeInTheDocument()
   })
 
-  it('should disable vote button when a voter did not vote yet', async () => {
-    const users = [
-      { name: 'Titi', observer: false, vote: '0' },
-      { name: 'Toto', observer: false, vote: '' },
-    ]
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
-    })
+  it('should disable vote button when voting is false', () => {
+    mockRoomSocket()
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     expect(screen.getByRole('button', { name: 'Show votes' })).toBeDisabled()
   })
 
-  it('should enable vote button when all voters vote', async () => {
-    const users = [
-      { name: 'Titi', observer: false, vote: '0' },
-      { name: 'Toto', observer: false, vote: '2' },
-    ]
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
-    })
+  it('should disable vote button when voting is true but show vote is not allowed', () => {
+    mockRoomSocket({ voting: true })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
+    expect(screen.getByRole('button', { name: 'Show votes' })).toBeDisabled()
+  })
+
+  it('should enable vote button when show voting is true and vote is allowed', () => {
+    mockRoomSocket({ voting: true, canShowVotes: true })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
     expect(screen.getByRole('button', { name: 'Show votes' })).toBeEnabled()
   })
 
-  it('should enable vote button when all voters vote and an observer is present', async () => {
-    const users = [
-      { name: 'Titi', observer: false, vote: '0' },
-      { name: 'Toto', observer: false, vote: '2' },
-      { name: 'Tutu', observer: true, vote: '' },
-    ]
-    await renderAsync(<Room user={{ name: 'Toto', observer: false }} />)
-    act(() => {
-      socketMock.emit('connect')
-    })
-    act(() => {
-      socketMock.emit('refresh', { voting: true, users, votes: { total: 1, '0': 1 } })
-    })
-    expect(screen.getByRole('button', { name: 'Show votes' })).toBeEnabled()
+  it('should disable reset button when voting is true', () => {
+    mockRoomSocket({ voting: true })
+    render(<Room user={{ name: 'Toto', observer: false }} />)
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeDisabled()
+  })
+
+  it('should enable reset button when voting is false', () => {
+    mockRoomSocket()
+    render(<Room user={{ name: 'Toto', observer: false }} />)
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeEnabled()
   })
 })

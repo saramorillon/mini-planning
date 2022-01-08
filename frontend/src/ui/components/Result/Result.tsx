@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { User } from '../../../models/User'
+import { Votes } from '../../../utils/getVotes'
 import { Chart } from '../Chart/Chart'
 import { Users } from '../Users/Users'
 
 interface IResultProps {
   users: User[]
-  votes: Record<string, number>
+  votes: Votes
   hidden: boolean
 }
 

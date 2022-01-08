@@ -5,12 +5,12 @@ import { mock } from '../../../mocks'
 
 jest.mock('../../../../src/socket/io')
 
-describe('portRoom', () => {
+describe('postRoom', () => {
   it('should init namespace', () => {
     const req = getMockReq({ params: { id: 'namespace' } })
     const { res } = getMockRes()
     postRoom(req, res)
-    expect(IoService.initNamespace).toHaveBeenCalledWith('/namespace')
+    expect(IoService.initRoom).toHaveBeenCalledWith('/namespace')
   })
 
   it('should send 204 status', () => {
@@ -21,7 +21,7 @@ describe('portRoom', () => {
   })
 
   it('should send 500 status when failure', () => {
-    mock(IoService.initNamespace).mockImplementation(() => {
+    mock(IoService.initRoom).mockImplementation(() => {
       throw new Error()
     })
     const req = getMockReq({ params: { id: 'namespace' } })

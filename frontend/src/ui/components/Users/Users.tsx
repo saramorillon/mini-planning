@@ -13,13 +13,13 @@ export function Users({ users, hidden, hovered }: IUsersProps): JSX.Element {
   return (
     <HTMLTable striped className="flex-auto mr2">
       <tbody>
-        {users.map(({ name, observer, vote }) => (
-          <tr key={name}>
-            <td style={{ width: '100%' }}>{name}</td>
+        {users.map((user, key) => (
+          <tr key={key}>
+            <td style={{ width: '100%' }}>{user.name}</td>
             <td>
-              {(vote || observer) && (
-                <SmallCard active intent={vote === hovered ? 'primary' : 'none'} $nohover>
-                  {observer ? '👀' : hidden ? '✓' : vote}
+              {(user.vote || user.observer) && (
+                <SmallCard active intent={user.vote === hovered ? 'primary' : 'none'} $nohover>
+                  {user.observer ? '👀' : hidden ? '✓' : user.vote}
                 </SmallCard>
               )}
             </td>

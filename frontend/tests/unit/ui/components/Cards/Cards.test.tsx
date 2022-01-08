@@ -14,14 +14,16 @@ describe('Cards', () => {
     expect(screen.getByRole('button', { name: '0' })).toBeEnabled()
   })
 
-  it('should render an outlined card if card is not selected', () => {
+  it('should render a normal outlined card if card is not selected', () => {
     render(<Cards vote="5" onVote={jest.fn()} active />)
     expect(screen.getByRole('button', { name: '0' })).toHaveClass(Classes.OUTLINED)
+    expect(screen.getByRole('button', { name: '0' })).not.toHaveClass(Classes.INTENT_PRIMARY)
   })
 
-  it('should render a solid card if card is selected', () => {
+  it('should render a primary solid card if card is selected', () => {
     render(<Cards vote="5" onVote={jest.fn()} active />)
     expect(screen.getByRole('button', { name: '5' })).not.toHaveClass(Classes.OUTLINED)
+    expect(screen.getByRole('button', { name: '5' })).toHaveClass(Classes.INTENT_PRIMARY)
   })
 
   it('should call onVote when clicking on card', () => {
