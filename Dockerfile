@@ -1,7 +1,4 @@
-FROM node:12.22.6-alpine as base
-
-RUN apk update
-RUN apk --no-cache add git
+FROM node:16.13.1-alpine as base
 
 ENV NODE_ENV=production
 
@@ -46,8 +43,6 @@ FROM bsources as bbuild
 COPY backend/tsconfig.json backend/
 COPY backend/tsconfig.build.json backend/
 COPY backend/src backend/src
-COPY backend/types backend/types
-COPY models/ models/
 
 RUN yarn --cwd backend build
 
@@ -59,7 +54,6 @@ COPY frontend/tsconfig.build.json frontend/
 COPY frontend/poi.config.js frontend/
 COPY frontend/public frontend/public
 COPY frontend/src frontend/src
-COPY models/ models/
 
 RUN yarn --cwd frontend build
 
@@ -70,23 +64,10 @@ RUN yarn --cwd frontend build
 FROM base as release
 
 ENV PUBLIC_DIR=/app/dist/public
-ENV TYPEORM_ENTITIES=/app/dist/backend/src/models/**/*.js
 
 COPY --from=dependencies --chown=node:node /app/backend/node_modules/ /app/node_modules/
 COPY --from=bbuild --chown=node:node /app/backend/dist/ /app/dist/
 COPY --from=fbuild --chown=node:node /app/frontend/dist/ /app/dist/public
-
-# Create repos directory
-RUN mkdir /app/repos
-RUN chown -R node:node /app/repos
-
-# Create db directory
-RUN mkdir /app/db
-RUN chown -R node:node /app/db
-
-# Create session directory
-RUN mkdir /app/sessions
-RUN chown -R node:node /app/sessions
 
 # Create logs directory
 RUN mkdir /app/dist/logs
