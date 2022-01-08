@@ -2,7 +2,7 @@ import { Classes, Colors } from '@blueprintjs/core'
 import { useTheme } from '@saramorillon/hooks'
 import c from 'classnames'
 import React from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import { Footer } from './components/Footer/Footer'
 import { Header } from './components/Header/Header'
@@ -18,18 +18,26 @@ export function App(): JSX.Element | null {
     <div className={c({ [Classes.DARK]: theme === 'dark' })}>
       {theme === 'dark' && <GlobalStyles />}
       <BrowserRouter>
-        <div className="flex flex-column items-stretch" style={{ minHeight: '100vh' }}>
-          <Header />
-          <div className="flex-auto">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/room/:id" element={<Lobby />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </div>
-          <Footer />
-        </div>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/room/:id" element={<Lobby />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
+    </div>
+  )
+}
+
+function Layout() {
+  return (
+    <div className="flex flex-column items-stretch" style={{ minHeight: '100vh' }}>
+      <Header />
+      <div className="flex-auto">
+        <Outlet />
+      </div>
+      <Footer />
     </div>
   )
 }

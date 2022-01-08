@@ -12,8 +12,10 @@ export function mockUser(user?: Partial<User>): User {
   return { name: 'name', observer: false, vote: '', ...user }
 }
 
-export function router({ children }: PropsWithChildren<unknown>): JSX.Element {
-  return <MemoryRouter>{children}</MemoryRouter>
+export function router(initialRoute = '/') {
+  return function Router({ children }: PropsWithChildren<unknown>): JSX.Element {
+    return <MemoryRouter initialEntries={[initialRoute]}>{children}</MemoryRouter>
+  }
 }
 
 export async function wait(): Promise<void> {
