@@ -1,3 +1,4 @@
+import { Divider } from '@blueprintjs/core'
 import React, { useState } from 'react'
 import { User } from '../../../models/User'
 import { Votes } from '../../../utils/getVotes'
@@ -16,6 +17,7 @@ export function Result({ users, votes, hidden }: IResultProps): JSX.Element {
   return (
     <div className="flex items-start">
       <Users users={users} hidden={hidden} hovered={hovered} />
+      <Divider className="self-stretch mx3" />
       <Chart votes={votes} hidden={hidden} setHovered={setHoverd} />
     </div>
   )

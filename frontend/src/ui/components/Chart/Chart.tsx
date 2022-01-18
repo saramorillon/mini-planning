@@ -14,7 +14,7 @@ export function Chart({ votes, hidden, setHovered }: IChartProps): JSX.Element |
   if (!votes.total) return null
 
   return (
-    <div className="flex-auto">
+    <div style={{ flex: 1 }}>
       {cards.map((card) => (
         <VoteBar
           key={card}

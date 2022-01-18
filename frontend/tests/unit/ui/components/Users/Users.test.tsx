@@ -46,6 +46,6 @@ describe('Users', () => {
       { name: 'Tutu', observer: false, vote: '1' },
     ]
     render(<Users users={users} hidden={false} hovered="0" />)
-    expect(screen.getByRole('button', { name: '0' })).toHaveClass(Classes.INTENT_PRIMARY)
+    expect(screen.getByText('0').parentElement).toHaveClass(Classes.INTENT_PRIMARY)
   })
 })
