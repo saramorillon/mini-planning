@@ -18,20 +18,23 @@ export function Cards({ vote, onVote, active }: ICardsProps): JSX.Element {
   )
 
   return (
-    <div className="flex justify-center">
-      {cards.map((card) => (
-        <Card
-          key={card}
-          className="m2"
-          disabled={!active}
-          outlined={vote !== card}
-          intent={vote === card ? 'primary' : 'none'}
-          onClick={() => onClick(card)}
-          large
-        >
-          {card}
-        </Card>
-      ))}
-    </div>
+    <>
+      <h1>Choose a card</h1>
+      <div className="flex justify-center">
+        {cards.map((card) => (
+          <Card
+            key={card}
+            className="m2"
+            disabled={!active}
+            outlined={vote !== card}
+            intent={vote === card ? 'primary' : 'none'}
+            onClick={() => onClick(card)}
+            large
+          >
+            {card}
+          </Card>
+        ))}
+      </div>
+    </>
   )
 }

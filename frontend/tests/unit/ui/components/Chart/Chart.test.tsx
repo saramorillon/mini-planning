@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Chart } from '../../../../../src/ui/components/Chart/Chart'
 
@@ -24,21 +24,5 @@ describe('Chart', () => {
     expect(screen.getAllByRole('progressbar')[1]).toHaveAttribute('aria-valuenow', '40')
     expect(screen.getByText('6 / 10')).toBeInTheDocument()
     expect(screen.getByText('4 / 10')).toBeInTheDocument()
-  })
-
-  it('should set hovered when hovering card', () => {
-    const setHovered = jest.fn()
-    render(<Chart votes={{ total: 10, '0': 6, '1': 4 }} hidden={false} setHovered={setHovered} />)
-    fireEvent.mouseEnter(screen.getByText('0'))
-    expect(setHovered).toHaveBeenCalledWith('0')
-    fireEvent.mouseLeave(screen.getByText('0'))
-    expect(setHovered).toHaveBeenCalledWith(undefined)
-  })
-
-  it('should set hovered when cliking card', () => {
-    const setHovered = jest.fn()
-    render(<Chart votes={{ total: 10, '0': 6, '1': 4 }} hidden={false} setHovered={setHovered} />)
-    fireEvent.click(screen.getByText('0'))
-    expect(setHovered).toHaveBeenCalledWith('0')
   })
 })

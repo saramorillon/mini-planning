@@ -25,6 +25,12 @@ describe('Room', () => {
     mockRoomSocket()
   })
 
+  it('should not show cards to observers', () => {
+    mockRoomSocket()
+    render(<Room user={{ name: 'Toto', observer: true }} />)
+    expect(screen.queryByText('Choose a card')).not.toBeInTheDocument()
+  })
+
   it('should show active cards when voting', () => {
     mockRoomSocket({ voting: true })
     render(<Room user={{ name: 'Toto', observer: false }} />)
