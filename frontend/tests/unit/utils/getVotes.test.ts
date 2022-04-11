@@ -11,6 +11,7 @@ describe('getVotes', () => {
       mockUser({ vote: '3' }),
       mockUser({ vote: '3' }),
       mockUser({ vote: '0' }),
+      mockUser({ observer: true }),
     ])
     expect(result).toEqual({ total: 7, '0': 1, '1': 2, '3': 3, '5': 1 })
   })
