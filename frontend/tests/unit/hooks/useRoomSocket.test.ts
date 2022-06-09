@@ -1,10 +1,10 @@
-import { act } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import { useParams } from 'react-router-dom'
 import { io, Socket } from 'socket.io-client'
 import { useRoomSocket } from '../../../src/hooks/useRoomSocket'
-import { mock, mockUser, renderHookAsync } from '../../mocks'
+import { mock, mockUser, wait } from '../../mocks'
 
 jest.mock('axios')
 jest.mock('react-router-dom')
@@ -28,32 +28,37 @@ describe('useRoomSocket', () => {
 
   it('should create room', async () => {
     mockSocket()
-    await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     expect(axios.post).toHaveBeenCalledWith('/api/room/id')
   })
 
   it('should create socket', async () => {
     mockSocket()
-    await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     expect(io).toHaveBeenCalledWith('/id', { transports: ['polling'] })
   })
 
   it('should listen to socket connection', async () => {
     const socketMock = mockSocket()
-    await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     expect(socketMock.on).toHaveBeenCalledWith('connect', expect.any(Function))
   })
 
   it('should join user on socket connection', async () => {
     const socketMock = mockSocket()
-    await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     socketMock.emit('connect')
     expect(socketMock.emit).toHaveBeenCalledWith('join', { name: 'name', observer: false })
   })
 
   it('should refresh users on refresh event', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     act(() => {
       socketMock.emit('refresh', { users: { id: mockUser() } })
     })
@@ -62,7 +67,8 @@ describe('useRoomSocket', () => {
 
   it('should refresh voting state on refresh event', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     act(() => {
       socketMock.emit('refresh', { users: {}, voting: false })
     })
@@ -71,19 +77,22 @@ describe('useRoomSocket', () => {
 
   it('should return empty vote when socket is not yet initialized', async () => {
     mock(io).mockReturnValue(undefined)
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     expect(result.current.vote).toBe('')
   })
 
   it('should return empty when user did not vote yet', async () => {
     mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     expect(result.current.vote).toBe('')
   })
 
   it("should return user's vote", async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     act(() => {
       socketMock.emit('refresh', { users: { id: mockUser({ vote: '5' }) } })
     })
@@ -92,7 +101,8 @@ describe('useRoomSocket', () => {
 
   it('should disallow show vote if some users did not vote', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     act(() => {
       socketMock.emit('refresh', { users: { id: mockUser() } })
     })
@@ -101,7 +111,8 @@ describe('useRoomSocket', () => {
 
   it('should allow show vote if all users have voted', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     act(() => {
       socketMock.emit('refresh', { users: { id: mockUser({ vote: '5' }) } })
     })
@@ -110,7 +121,8 @@ describe('useRoomSocket', () => {
 
   it('should allow show vote if all users have voted expected observer', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     act(() => {
       socketMock.emit('refresh', { users: { id: mockUser({ vote: '5' }), id2: mockUser({ observer: true }) } })
     })
@@ -119,28 +131,32 @@ describe('useRoomSocket', () => {
 
   it('should not emit voting event if socket is not yet initialized', async () => {
     mock(io).mockReturnValue(undefined)
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     result.current.onChangeStatus()
     expect(Socket.prototype.emit).not.toHaveBeenCalled()
   })
 
   it('should emit voting event on status change', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     result.current.onChangeStatus()
     expect(socketMock.emit).toHaveBeenCalledWith('voting', false)
   })
 
   it('should not emit vote event if socket is not yet initialized', async () => {
     mock(io).mockReturnValue(undefined)
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     result.current.onVote('5')
     expect(Socket.prototype.emit).not.toHaveBeenCalled()
   })
 
   it('should emit vote event on vote', async () => {
     const socketMock = mockSocket()
-    const { result } = await renderHookAsync(() => useRoomSocket({ name: 'name', observer: false }))
+    const { result } = renderHook(() => useRoomSocket({ name: 'name', observer: false }))
+    await wait()
     result.current.onVote('5')
     expect(socketMock.emit).toHaveBeenCalledWith('vote', '5')
   })

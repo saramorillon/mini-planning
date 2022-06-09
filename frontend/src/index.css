@@ -1,0 +1,23 @@
+.icon {
+  vertical-align: middle;
+  margin-top: -0.25em;
+}
+
+.card {
+  border-radius: 0.125rem;
+  width: 3.425rem;
+  height: 4.25rem;
+}
+
+.card.small {
+  width: 2rem;
+  height: unset;
+  border: 1px solid var(--palette-border);
+  text-align: center;
+  cursor: pointer;
+}
+
+.card.small.hovered,
+.card.small:hover {
+  background-color: var(--palette-primary);
+}

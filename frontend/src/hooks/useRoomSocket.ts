@@ -24,7 +24,7 @@ export function useRoomSocket(user: Omit<User, 'vote'>): IRoomProps {
   const canShowVotes = useMemo(() => Object.values(users).every((user) => user.observer || user.vote), [users])
 
   useEffect(() => {
-    axios.post(`/api/room/${id}`).then(() => {
+    void axios.post(`/api/room/${id}`).then(() => {
       setSocket(io(`/${id}`, { transports: ['polling'] }))
     })
   }, [id])
