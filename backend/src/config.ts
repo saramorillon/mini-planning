@@ -1,7 +1,8 @@
 import { bool, cleanEnv, num, str } from 'envalid'
-import { ContentSecurityPolicyOptions } from 'helmet/dist/middlewares/content-security-policy'
+import { HelmetOptions } from 'helmet'
 
 const env = cleanEnv(process.env, {
+  NODE_ENV: str({ choices: ['development', 'test', 'production']}),
   APP_PORT: num({ default: 80 }),
   LOG_LEVEL: str({ choices: ['debug', 'info', 'warn', 'error'], default: 'info' }),
   LOG_SILENT: bool({ default: false }),
@@ -12,7 +13,7 @@ interface IConfig {
   environment?: string
   port: number
   logLevel: 'debug' | 'info' | 'warn' | 'error'
-  contentSecurityPolicy: ContentSecurityPolicyOptions
+  contentSecurityPolicy: HelmetOptions['contentSecurityPolicy']
   logSilent: boolean
   publicDir: string
 }

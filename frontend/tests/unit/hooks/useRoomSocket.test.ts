@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react'
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import { useParams } from 'react-router-dom'

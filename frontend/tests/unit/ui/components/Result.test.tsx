@@ -18,12 +18,12 @@ describe('Result', () => {
   it('should hide chart when hidden', () => {
     const users = [{ name: 'Toto', observer: false, vote: '0' }]
     render(<Result users={users} votes={{ '0': 1, total: 1 }} hidden />)
-    expect(screen.getAllByRole('progressbar')[0]).toHaveAttribute('value', '0')
+    expect(screen.getAllByRole('progressbar')[0]).toHaveValue('0')
   })
 
   it('should show chart when not hidden', () => {
     const users = [{ name: 'Toto', observer: false, vote: '0' }]
     render(<Result users={users} votes={{ '0': 1, total: 1 }} hidden={false} />)
-    expect(screen.getAllByRole('progressbar')[0]).toHaveAttribute('value', '1')
+    expect(screen.getAllByRole('progressbar')[0]).toHaveValue('1')
   })
 })
