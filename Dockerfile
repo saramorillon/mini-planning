@@ -51,7 +51,8 @@ FROM fsources as fbuild
 
 COPY frontend/tsconfig.json frontend/
 COPY frontend/tsconfig.build.json frontend/
-COPY frontend/poi.config.js frontend/
+COPY frontend/vite.config.ts frontend/
+COPY frontend/index.html frontend/
 COPY frontend/public frontend/public
 COPY frontend/src frontend/src
 
