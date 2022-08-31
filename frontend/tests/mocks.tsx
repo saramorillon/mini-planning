@@ -1,10 +1,16 @@
 import { act } from '@testing-library/react'
 import React, { PropsWithChildren } from 'react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useNavigate } from 'react-router-dom'
 import { User } from '../src/models/User'
 
 export function mock(fn: unknown): jest.Mock {
   return fn as jest.Mock
+}
+
+export function mockNavigate(): jest.Mock {
+  const navigate = jest.fn()
+  mock(useNavigate).mockReturnValue(navigate)
+  return navigate
 }
 
 export function mockUser(user?: Partial<User>): User {

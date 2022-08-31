@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { FormEvent, useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
 import { Room } from './Room'
@@ -12,7 +12,7 @@ export function Lobby(): JSX.Element {
   const [observer, setObserver] = useState(false)
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent) => {
       e.preventDefault()
       const search = new URLSearchParams()
       search.set('name', name)

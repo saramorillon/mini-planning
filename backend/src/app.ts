@@ -1,22 +1,24 @@
 import express, { Request, Response, static as staticDir } from 'express'
 import helmet from 'helmet'
-import { createServer, Server } from 'http'
+import { createServer } from 'http'
 import { join } from 'path'
+import { Server } from 'socket.io'
 import { config } from './config'
-import { router } from './router'
-import { IoService } from './socket/io'
+import { getApp } from './controllers/app/getApp'
+import { room } from './socket/room'
 
 const { contentSecurityPolicy, publicDir } = config
 
-export function createApp(): Server {
+export function createApp() {
   const app = express()
   app.use(staticDir(publicDir))
   app.use(helmet({ contentSecurityPolicy }))
-  app.use('/api', router())
+  app.use('/api/app', getApp)
   app.get('*', renderFile)
 
   const http = createServer(app)
-  IoService.init(http)
+
+  new Server(http).of(/^\/.+$/).on('connection', room)
 
   return http
 }

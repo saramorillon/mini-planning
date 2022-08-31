@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useUser } from '../../../../src/hooks/useUser'
 import { Lobby } from '../../../../src/ui/pages/Lobby'
-import { mock } from '../../../mocks'
+import { mock, mockNavigate } from '../../../mocks'
 
 jest.mock('react-router-dom')
 jest.mock('../../../../src/hooks/useUser')
@@ -33,8 +33,7 @@ describe('Lobby', () => {
   })
 
   it('should register user when submitting form', () => {
-    const navigate = jest.fn()
-    mock(useNavigate).mockReturnValue(navigate)
+    const navigate = mockNavigate()
     render(<Lobby />)
     fireEvent.change(screen.getByPlaceholderText('Enter your name'), { target: { value: 'Toto' } })
     fireEvent.click(screen.getByLabelText('Observer'))

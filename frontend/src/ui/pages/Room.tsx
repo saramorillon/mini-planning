@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useRoomSocket } from '../../hooks/useRoomSocket'
+import { useSocket } from '../../hooks/useSocket'
 import { User } from '../../models/User'
 import { getVotes } from '../../utils/getVotes'
 import { Cards } from '../components/Cards'
@@ -11,8 +11,10 @@ interface IRoomProps {
 }
 
 export function Room({ user }: IRoomProps): JSX.Element {
-  const { users, voting, vote, canShowVotes, onVote, onChangeStatus } = useRoomSocket(user)
+  const { users, voting, vote, onVote, onChangeStatus } = useSocket(user)
   const votes = useMemo(() => getVotes(users), [users])
+
+  const canShowVotes = useMemo(() => users.every((user) => user.observer || user.vote), [users])
 
   const voters = users.filter((user) => !user.observer)
   const observers = users.filter((user) => user.observer)
@@ -33,7 +35,7 @@ export function Room({ user }: IRoomProps): JSX.Element {
           Reset
         </button>
       </header>
-      <div className="mx-auto max-width-4 pb2">
+      <div className="px4 mx-auto max-width-4 pb2">
         <Observers users={observers} />
         <h2>Votes</h2>
         <Result users={voters} votes={votes} hidden={voting} />

@@ -30,7 +30,7 @@ describe('router', () => {
   it('should register room route', () => {
     const routerMock = mockRouter()
     router()
-    expect(routerMock.post).toHaveBeenCalledWith('/room/:id', postRoom)
+    expect(routerMock.post).toHaveBeenCalledWith('/room', postRoom)
   })
 
   it('should return router', () => {
