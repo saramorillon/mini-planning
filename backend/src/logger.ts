@@ -15,7 +15,7 @@ export function start(message: string, meta?: Record<string, unknown>): IAction 
 
   return {
     success: () => log('info', message + '_success', meta),
-    failure: (error) => log('error', message + '_success', { ...meta, error: parseError(error) }),
+    failure: (error) => log('error', message + '_failure', { ...meta, error: parseError(error) }),
   }
 }
 

@@ -41,6 +41,7 @@ describe('createApp', () => {
           fontSrc: ["'self'", 'https:'],
         },
       },
+      crossOriginEmbedderPolicy: false,
     })
     expect(expressMock.use).toHaveBeenCalledWith('helmet')
   })
@@ -74,7 +75,7 @@ describe('getApp', () => {
       author: { name: 'Sara Morillon', url: 'https://saramorillon.com/' },
       name: 'mini-planning',
       repository: { url: 'https://github.com/saramorillon/mini-planning' },
-      version: '1.2.1',
+      version: expect.any(String),
     })
   })
 })

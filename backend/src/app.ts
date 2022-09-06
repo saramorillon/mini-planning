@@ -12,7 +12,7 @@ const { contentSecurityPolicy, publicDir } = config
 export function createApp() {
   const app = express()
   app.use(staticDir(publicDir))
-  app.use(helmet({ contentSecurityPolicy }))
+  app.use(helmet({ contentSecurityPolicy, crossOriginEmbedderPolicy: false }))
   app.use('/api/app', getApp)
   app.get('*', renderFile)
 
