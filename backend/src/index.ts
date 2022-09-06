@@ -1,9 +1,9 @@
 import { createApp } from './app'
 import { config } from './config'
-import { logger } from './logger'
+import { log } from './logger'
 
 const { port } = config
 
 createApp().listen(port, () => {
-  logger.info('app_start', { port })
+  log('info', 'app_start', { port })
 })

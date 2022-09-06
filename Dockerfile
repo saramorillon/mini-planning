@@ -70,10 +70,6 @@ COPY --from=dependencies --chown=node:node /app/backend/node_modules/ /app/node_
 COPY --from=bbuild --chown=node:node /app/backend/dist/ /app/dist/
 COPY --from=fbuild --chown=node:node /app/frontend/dist/ /app/dist/public
 
-# Create logs directory
-RUN mkdir /app/dist/logs
-RUN chown -R node:node /app/dist/logs
-
 USER node
 
 CMD ["yarn", "--cwd", "dist/backend", "start"]

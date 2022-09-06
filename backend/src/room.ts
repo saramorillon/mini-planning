@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io'
-import { logger } from './logger'
+import { log } from './logger'
 
 export type User = { name: string; observer: boolean; vote: string }
 
@@ -15,7 +15,7 @@ export function room(socket: Socket) {
   socket.on('join', (user: Omit<User, 'vote'>) => {
     if (!room.users[socket.id]) {
       room.users[socket.id] = { ...user, vote: '' }
-      logger.info('user_join', { room: socket.nsp.name, user: room.users[socket.id] })
+      log('info', 'user_join', { room: socket.nsp.name, user: room.users[socket.id] })
       socket.nsp.emit('refresh', room)
     }
   })
@@ -23,14 +23,14 @@ export function room(socket: Socket) {
   socket.on('vote', (vote: string) => {
     if (room.users[socket.id]) {
       room.users[socket.id].vote = vote
-      logger.info('user_vote', { room: socket.nsp.name, user: room.users[socket.id] })
+      log('info', 'user_vote', { room: socket.nsp.name, user: room.users[socket.id] })
       socket.nsp.emit('refresh', room)
     }
   })
 
   socket.on('disconnect', () => {
     if (room.users[socket.id]) {
-      logger.info('user_disconnect', { room: socket.nsp.name, user: room.users[socket.id] })
+      log('info', 'user_disconnect', { room: socket.nsp.name, user: room.users[socket.id] })
       delete room.users[socket.id]
       socket.nsp.emit('refresh', room)
     }
