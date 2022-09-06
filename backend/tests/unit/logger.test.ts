@@ -1,4 +1,4 @@
-import { logger, parseError, start } from '../../../src/libs/logger'
+import { logger, parseError, start } from '../../src/logger'
 
 describe('start', () => {
   it('should log message and meta', () => {

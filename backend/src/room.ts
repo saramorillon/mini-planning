@@ -1,9 +1,9 @@
 import { Socket } from 'socket.io'
-import { logger } from '../libs/logger'
+import { logger } from './logger'
 
 export type User = { name: string; observer: boolean; vote: string }
 
-const rooms: Record<string, { voting: boolean; users: Record<string, User> }> = {}
+export const rooms: Record<string, { voting: boolean; users: Record<string, User> }> = {}
 
 export function room(socket: Socket) {
   if (!rooms[socket.nsp.name]) {

@@ -3,9 +3,9 @@ import helmet from 'helmet'
 import { createServer } from 'http'
 import { join } from 'path'
 import { Server } from 'socket.io'
+import { author, name, repository, version } from '../package.json'
 import { config } from './config'
-import { getApp } from './controllers/app/getApp'
-import { room } from './socket/room'
+import { room } from './room'
 
 const { contentSecurityPolicy, publicDir } = config
 
@@ -25,4 +25,8 @@ export function createApp() {
 
 export function renderFile(req: Request, res: Response): void {
   res.sendFile(join(publicDir, 'index.html'))
+}
+
+export function getApp(req: Request, res: Response): void {
+  res.json({ name, version, repository, author })
 }

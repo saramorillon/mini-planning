@@ -2,13 +2,11 @@ import { getMockReq, getMockRes } from '@jest-mock/express'
 import express, { Response, static as staticDir } from 'express'
 import helmet from 'helmet'
 import { join } from 'path'
-import { createApp, renderFile } from '../../src/app'
-import { router } from '../../src/router'
+import { createApp, getApp, renderFile } from '../../src/app'
 import { mock } from '../mocks'
 
 jest.mock('express')
 jest.mock('helmet')
-jest.mock('../../src/router')
 
 function mockExpress() {
   const expressMock = { use: jest.fn(), get: jest.fn() }
@@ -39,19 +37,18 @@ describe('createApp', () => {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'"],
-          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+          styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
+          fontSrc: ["'self'", 'https:'],
         },
       },
     })
     expect(expressMock.use).toHaveBeenCalledWith('helmet')
   })
 
-  it('should use router', () => {
-    mock(router).mockReturnValue('router')
+  it('should create app route', () => {
     const expressMock = mockExpress()
     createApp()
-    expect(expressMock.use).toHaveBeenCalledWith('/api', 'router')
+    expect(expressMock.use).toHaveBeenCalledWith('/api/app', getApp)
   })
 
   it('should create static route', () => {
@@ -66,5 +63,18 @@ describe('renderFile', () => {
     const { res } = getMockRes<Response>()
     renderFile(getMockReq(), res)
     expect(res.sendFile).toHaveBeenCalledWith(join('public-dir', 'index.html'))
+  })
+})
+
+describe('getApp', () => {
+  it('should send app info', () => {
+    const { res } = getMockRes<Response>()
+    getApp(getMockReq(), res)
+    expect(res.json).toHaveBeenCalledWith({
+      author: { name: 'Sara Morillon', url: 'https://saramorillon.com/' },
+      name: 'mini-planning',
+      repository: { url: 'https://github.com/saramorillon/mini-planning' },
+      version: '1.2.1',
+    })
   })
 })
