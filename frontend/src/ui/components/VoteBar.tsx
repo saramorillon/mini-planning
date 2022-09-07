@@ -18,7 +18,7 @@ export function VoteBar({ card, quantity = 0, max, setHovered }: IVoteBarProps) 
       >
         {card}
       </div>
-      <progress value={quantity / max} />
+      <progress className="flex-auto" style={{ width: 'unset' }} value={quantity / max} />
       {quantity > 0 && (
         <span className="nowrap ml2">
           {quantity} / {max}
