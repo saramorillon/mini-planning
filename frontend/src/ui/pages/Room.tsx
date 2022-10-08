@@ -14,8 +14,6 @@ export function Room({ user }: IRoomProps): JSX.Element {
   const { users, voting, vote, onVote, onChangeStatus } = useSocket(user)
   const votes = useMemo(() => getVotes(users), [users])
 
-  const canShowVotes = useMemo(() => users.every((user) => user.observer || user.vote), [users])
-
   const voters = users.filter((user) => !user.observer)
   const observers = users.filter((user) => user.observer)
 
@@ -23,12 +21,7 @@ export function Room({ user }: IRoomProps): JSX.Element {
     <>
       <header className="p4 center">
         {!user.observer && <Cards vote={vote} onVote={onVote} active={voting} />}
-        <button
-          className="mr3"
-          disabled={!canShowVotes || !voting}
-          data-variant={voting ? 'primary' : ''}
-          onClick={onChangeStatus}
-        >
+        <button className="mr3" disabled={!voting} data-variant={voting ? 'primary' : ''} onClick={onChangeStatus}>
           Show votes
         </button>
         <button disabled={voting} data-variant={voting ? '' : 'primary'} onClick={onChangeStatus}>

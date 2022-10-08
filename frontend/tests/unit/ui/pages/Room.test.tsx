@@ -73,18 +73,6 @@ describe('Room', () => {
     expect(screen.getByRole('button', { name: 'Show votes' })).toBeDisabled()
   })
 
-  it('should disable "Show votes" button if some users did not vote', () => {
-    mockSocket({ users: [mockUser()] })
-    render(<Room user={mockUser()} />)
-    expect(screen.getByRole('button', { name: 'Show votes' })).toBeDisabled()
-  })
-
-  it('should enable "Show votes" button if all users but observers have voted', () => {
-    mockSocket({ voting: true, users: [mockUser({ vote: '5' }), mockUser({ observer: true })] })
-    render(<Room user={mockUser()} />)
-    expect(screen.getByRole('button', { name: 'Show votes' })).toBeEnabled()
-  })
-
   it('should disable reset button when voting is true', () => {
     mockSocket({ voting: true })
     render(<Room user={mockUser()} />)
