@@ -44,9 +44,9 @@ jobs:
     if: always()
 
     steps:
-      - name: Send Discord message
+      - name: Send Discord notification
         shell: bash
         run: |
           result="${{ needs.build_and_test.result }}"
-          $repo_url="[${{ github.repository }}](${{ github.repositoryUrl }})"
+          repo_url="[${{ github.repository }}](${{ github.repositoryUrl }})"
           curl -X POST -d "{\"content\":\"Checks on $repo_url: **${result^^}**\"}" -H "Content-Type: application/json" ${{ secrets.DISCORD_WEBHOOK }}
