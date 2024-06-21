@@ -1,3 +1,5 @@
+name: Push image to Docker
+
 on:
   push:
     tags: v*.*.*
