@@ -1,0 +1,37 @@
+on:
+  push:
+    branches: master
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Check
+        run: pnpm -r --workspace-concurrency=1 exec biome check .
+
+      - name: Build
+        run: pnpm -r --workspace-concurrency=1 build
+
+      - name: Test
+        run: pnpm -r --workspace-concurrency=1 exec vitest run
