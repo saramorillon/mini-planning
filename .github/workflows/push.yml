@@ -48,5 +48,5 @@ jobs:
         shell: bash
         run: |
           result="${{ needs.push_docker_image.result }}"
-          repo_url="[${{ github.repository }}@${{ github.ref_name }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          repo_url="[${{ github.repository }}@${{ github.ref_name }}](<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}>)"
           curl -X POST -d "{\"content\":\"Push image $repo_url: **${result^^}**\"}" -H "Content-Type: application/json" ${{ secrets.DISCORD_WEBHOOK }}
