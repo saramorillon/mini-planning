@@ -17,7 +17,7 @@ export function useSocket(user: Omit<User, 'vote'>): IRoomProps {
   const [users, setUsers] = useState<Record<string, User>>({})
   const [voting, setVoting] = useState(true)
 
-  const vote = useMemo(() => users[socket.id]?.vote || '', [users, socket])
+  const vote = useMemo(() => (socket.id && users[socket.id]?.vote) || '', [users, socket])
 
   useEffect(() => {
     socket.on('connect', () => socket.emit('join', user))
