@@ -1,0 +1,42 @@
+on:
+  push:
+    tags: v*.*.*
+
+jobs:
+  push_docker_image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: saramorillon/mini-planning:${{ github.ref_name }},saramorillon/mini-planning:latest
+
+  send_discord_notification:
+    runs-on: ubuntu-latest
+
+    needs: push_docker_image
+
+    if: always()
+
+    steps:
+      - name: Send Discord notification
+        shell: bash
+        run: |
+          result="${{ needs.push_docker_image.result }}"
+          repo_url="[${{ github.repository }}@${{ github.ref_name }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          curl -X POST -d "{\"content\":\"Push image $repo_url: **${result^^}**\"}" -H "Content-Type: application/json" ${{ secrets.DISCORD_WEBHOOK }}
