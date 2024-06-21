@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { Vote } from '../../../../src/ui/components/Vote'
+import { Vote } from '../../../../src/ui/components/Vote.js'
 
 describe('Vote', () => {
   it('should not show vote when hidden', () => {

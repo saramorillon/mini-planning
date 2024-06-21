@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
-import { useSocket } from '../../hooks/useSocket'
-import { User } from '../../models/User'
-import { getVotes } from '../../utils/getVotes'
-import { Cards } from '../components/Cards'
-import { Observers } from '../components/Observers'
-import { Result } from '../components/Result'
+import { useSocket } from '../../hooks/useSocket.js'
+import { User } from '../../models/User.js'
+import { getVotes } from '../../utils/getVotes.js'
+import { Cards } from '../components/Cards.js'
+import { Observers } from '../components/Observers.js'
+import { Result } from '../components/Result.js'
 
 interface IRoomProps {
   user: Omit<User, 'vote'>

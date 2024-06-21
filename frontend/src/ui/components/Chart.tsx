@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { Votes } from '../../utils/getVotes'
-import { cards } from './Cards'
-import { VoteBar } from './VoteBar'
+import { Votes } from '../../utils/getVotes.js'
+import { cards } from './Cards.js'
+import { VoteBar } from './VoteBar.js'
 
 interface IChartProps {
   votes: Votes

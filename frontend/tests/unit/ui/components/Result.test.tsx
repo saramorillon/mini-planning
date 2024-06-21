@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { Result } from '../../../../src/ui/components/Result'
+import { Result } from '../../../../src/ui/components/Result.js'
 
 describe('Result', () => {
   it('should show users', () => {

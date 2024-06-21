@@ -1,9 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import { Footer } from './components/Footer'
-import { Header } from './components/Header'
-import { Home } from './pages/Home'
-import { Lobby } from './pages/Lobby'
+import { Footer } from './components/Footer.js'
+import { Header } from './components/Header.js'
+import { Home } from './pages/Home.js'
+import { Lobby } from './pages/Lobby.js'
 
 export function App(): JSX.Element | null {
   return (

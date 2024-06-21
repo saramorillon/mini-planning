@@ -1,7 +1,7 @@
 import React, { FormEvent, useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useUser } from '../../hooks/useUser'
-import { Room } from './Room'
+import { useUser } from '../../hooks/useUser.js'
+import { Room } from './Room.js'
 
 export function Lobby(): JSX.Element {
   const { pathname } = useLocation()

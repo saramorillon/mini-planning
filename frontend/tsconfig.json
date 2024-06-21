@@ -1,13 +1,7 @@
 {
+  "extends": "./tsconfig.build.json",
   "include": ["src", "tests", "vite.config.ts"],
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
-    "module": "commonjs",
-    "target": "ES2021",
-    "outDir": "dist",
-    "jsx": "react",
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "strict": true
+    "types": ["vitest/globals"]
   }
 }

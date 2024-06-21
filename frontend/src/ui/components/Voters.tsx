@@ -1,6 +1,6 @@
 import React from 'react'
-import { User } from '../../models/User'
-import { Vote } from './Vote'
+import { User } from '../../models/User.js'
+import { Vote } from './Vote.js'
 
 interface IVotersProps {
   users: Omit<User, 'observer'>[]

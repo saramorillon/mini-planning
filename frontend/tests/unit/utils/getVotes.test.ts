@@ -1,5 +1,5 @@
-import { getVotes } from '../../../src/utils/getVotes'
-import { mockUser } from '../../mocks'
+import { getVotes } from '../../../src/utils/getVotes.js'
+import { mockUser } from '../../mocks.js'
 
 describe('getVotes', () => {
   it('should return total number of votes for each value', () => {

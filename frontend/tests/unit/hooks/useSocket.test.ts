@@ -2,17 +2,17 @@ import { act, renderHook } from '@testing-library/react'
 import { EventEmitter } from 'events'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
-import { useSocket } from '../../../src/hooks/useSocket'
-import { mock, mockUser, wait } from '../../mocks'
+import { useSocket } from '../../../src/hooks/useSocket.js'
+import { mock, mockUser, wait } from '../../mocks.js'
 
-jest.mock('react-router-dom')
+vi.mock('react-router-dom')
 
 function mockSocket() {
   const socketMock = new EventEmitter()
-  jest.spyOn(socketMock, 'on')
-  jest.spyOn(socketMock, 'emit')
+  vi.spyOn(socketMock, 'on')
+  vi.spyOn(socketMock, 'emit')
   Object.defineProperty(socketMock, 'id', { value: 'id' })
-  Object.defineProperty(socketMock, 'disconnect', { value: jest.fn() })
+  Object.defineProperty(socketMock, 'disconnect', { value: vi.fn() })
   mock(io).mockReturnValue(socketMock)
   return socketMock
 }

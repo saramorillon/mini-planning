@@ -1,7 +1,7 @@
 import { useFetch } from '@saramorillon/hooks'
 import React from 'react'
-import { FiGitBranch, FiGlobe } from 'react-icons/fi'
-import { getApp } from '../../services/app'
+import { FiGitBranch, FiGlobe } from 'react-icons/fi/index.js'
+import { getApp } from '../../services/app.js'
 
 export function Footer(): JSX.Element | null {
   const [app] = useFetch(getApp, null)

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { Voters } from '../../../../src/ui/components/Voters'
+import { Voters } from '../../../../src/ui/components/Voters.js'
 
 describe('Voters', () => {
   it('should show users name', () => {

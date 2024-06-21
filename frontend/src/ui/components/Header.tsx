@@ -1,6 +1,6 @@
 import { useCopy } from '@saramorillon/hooks'
 import React, { useMemo } from 'react'
-import { FiClipboard } from 'react-icons/fi'
+import { FiClipboard } from 'react-icons/fi/index.js'
 import { Link, useLocation } from 'react-router-dom'
 
 export function Header(): JSX.Element {

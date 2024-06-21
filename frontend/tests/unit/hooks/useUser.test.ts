@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
-import { useUser } from '../../../src/hooks/useUser'
-import { mock } from '../../mocks'
+import { useUser } from '../../../src/hooks/useUser.js'
+import { mock } from '../../mocks.js'
 
-jest.mock('react-router-dom')
+vi.mock('react-router-dom')
 
 describe('useUser', () => {
   beforeEach(() => {

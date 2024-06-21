@@ -1,14 +1,14 @@
 import { useCopy } from '@saramorillon/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import { Header } from '../../../../src/ui/components/Header'
-import { mock, router } from '../../../mocks'
+import { Header } from '../../../../src/ui/components/Header.js'
+import { mock, router } from '../../../mocks.js'
 
-jest.mock('@saramorillon/hooks')
+vi.mock('@saramorillon/hooks')
 
 describe('Header', () => {
   beforeEach(() => {
-    mock(useCopy).mockReturnValue([false, null, jest.fn()])
+    mock(useCopy).mockReturnValue([false, null, vi.fn()])
   })
 
   it('should render brand and logo', () => {
@@ -28,16 +28,16 @@ describe('Header', () => {
   })
 
   it('should render copy button if copy is enabled', () => {
-    mock(useCopy).mockReturnValue([true, null, jest.fn()])
+    mock(useCopy).mockReturnValue([true, null, vi.fn()])
     render(<Header />, { wrapper: router('/room/id?name=name&observer=false') })
     expect(screen.getByText('Copy invitation link')).toBeInTheDocument()
   })
 
   it('should copy url when clicking on button', () => {
-    const copy = jest.fn()
+    const copy = vi.fn()
     mock(useCopy).mockReturnValue([true, null, copy])
     render(<Header />, { wrapper: router('/room/id?name=name&observer=false') })
     fireEvent.click(screen.getByText('Copy invitation link'))
-    expect(copy).toHaveBeenCalledWith('http://localhost/room/id')
+    expect(copy).toHaveBeenCalledWith('http://localhost:3000/room/id')
   })
 })

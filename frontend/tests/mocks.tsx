@@ -1,14 +1,15 @@
 import { act } from '@testing-library/react'
 import React, { PropsWithChildren } from 'react'
 import { MemoryRouter, useNavigate } from 'react-router-dom'
-import { User } from '../src/models/User'
+import { Mock } from 'vitest'
+import { User } from '../src/models/User.js'
 
-export function mock(fn: unknown): jest.Mock {
-  return fn as jest.Mock
+export function mock(fn: unknown): Mock {
+  return fn as Mock
 }
 
-export function mockNavigate(): jest.Mock {
-  const navigate = jest.fn()
+export function mockNavigate(): Mock {
+  const navigate = vi.fn()
   mock(useNavigate).mockReturnValue(navigate)
   return navigate
 }
@@ -24,5 +25,5 @@ export function router(initialRoute = '/') {
 }
 
 export function wait(): Promise<void> {
-  return act(() => new Promise((resolve) => setTimeout(resolve)))
+  return act(() => new Promise<void>((resolve) => setTimeout(resolve)))
 }

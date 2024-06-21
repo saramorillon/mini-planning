@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { v4 } from 'uuid'
-import { Home } from '../../../../src/ui/pages/Home'
-import { mock, mockNavigate } from '../../../mocks'
+import { Home } from '../../../../src/ui/pages/Home.js'
+import { mock, mockNavigate } from '../../../mocks.js'
 
-jest.mock('react-router-dom')
+vi.mock('react-router-dom')
 
 describe('Home', () => {
   it('should go to room page when clicking on button', () => {

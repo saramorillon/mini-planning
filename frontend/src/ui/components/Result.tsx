@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { User } from '../../models/User'
-import { Votes } from '../../utils/getVotes'
-import { Chart } from './Chart'
-import { Voters } from './Voters'
+import { User } from '../../models/User.js'
+import { Votes } from '../../utils/getVotes.js'
+import { Chart } from './Chart.js'
+import { Voters } from './Voters.js'
 
 interface IResultProps {
   users: User[]

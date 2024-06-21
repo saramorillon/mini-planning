@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { useUser } from '../../../../src/hooks/useUser'
-import { Lobby } from '../../../../src/ui/pages/Lobby'
-import { mock, mockNavigate } from '../../../mocks'
+import { useUser } from '../../../../src/hooks/useUser.js'
+import { Lobby } from '../../../../src/ui/pages/Lobby.js'
+import { mock, mockNavigate } from '../../../mocks.js'
 
-jest.mock('react-router-dom')
-jest.mock('../../../../src/hooks/useUser')
-jest.mock('../../../../src/ui/pages/Room', () => ({
+vi.mock('react-router-dom')
+vi.mock('../../../../src/hooks/useUser.js')
+vi.mock('../../../../src/ui/pages/Room.js', () => ({
   Room: function Room() {
     return <div>Room mock</div>
   },

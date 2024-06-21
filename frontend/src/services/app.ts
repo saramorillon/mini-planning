@@ -1,9 +1,7 @@
-import axios from 'axios'
-import { IApp } from '../models/App'
+import { IApp } from '../models/App.js'
 
 export function getApp(): Promise<IApp | null> {
-  return axios
-    .get<IApp | null>('/api/app')
-    .then((res) => res.data)
+  return fetch('/api/app')
+    .then((res) => res.json())
     .catch(() => null)
 }

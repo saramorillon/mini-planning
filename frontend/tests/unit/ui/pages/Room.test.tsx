@@ -1,18 +1,18 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import { IRoomProps, useSocket } from '../../../../src/hooks/useSocket'
-import { Room } from '../../../../src/ui/pages/Room'
-import { mock, mockUser } from '../../../mocks'
+import { IRoomProps, useSocket } from '../../../../src/hooks/useSocket.js'
+import { Room } from '../../../../src/ui/pages/Room.js'
+import { mock, mockUser } from '../../../mocks.js'
 
-jest.mock('../../../../src/hooks/useSocket')
+vi.mock('../../../../src/hooks/useSocket.js')
 
 function mockSocket(props?: Partial<IRoomProps>): IRoomProps {
   const roomPropsMock = {
     voting: false,
     users: [],
     vote: '',
-    onChangeStatus: jest.fn(),
-    onVote: jest.fn(),
+    onChangeStatus: vi.fn(),
+    onVote: vi.fn(),
     ...props,
   }
   mock(useSocket).mockReturnValue(roomPropsMock)

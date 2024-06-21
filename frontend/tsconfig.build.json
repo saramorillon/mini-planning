@@ -1,4 +1,13 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": ["tests"]
+  "include": ["src", "tests", "vite.config.ts"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "outDir": "dist",
+    "jsx": "react",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true
+  }
 }

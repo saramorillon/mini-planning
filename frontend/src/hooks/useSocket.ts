@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
-import { User } from '../models/User'
+import { User } from '../models/User.js'
 
 export interface IRoomProps {
   users: User[]

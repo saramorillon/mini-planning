@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { Observers } from '../../../../src/ui/components/Observers'
+import { Observers } from '../../../../src/ui/components/Observers.js'
 
 it('should not show observers if no observer is present', () => {
   render(<Observers users={[]} />)

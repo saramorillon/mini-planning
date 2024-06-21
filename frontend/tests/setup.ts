@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
-jest.mock('socket.io-client')
-jest.mock('axios')
-jest.mock('uuid')
+vi.mock('socket.io-client')
+vi.mock('axios')
+vi.mock('uuid')
