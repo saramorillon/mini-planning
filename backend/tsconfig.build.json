@@ -1,4 +1,14 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": ["tests"]
+  "include": ["src"],
+  "compilerOptions": {
+    "lib": ["ES2021"],
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true
+  }
 }

@@ -1,6 +1,6 @@
-import { createApp } from './app'
-import { config } from './config'
-import { log } from './logger'
+import { createApp } from './app.js'
+import { config } from './config.js'
+import { log } from './logger.js'
 
 const { port } = config
 

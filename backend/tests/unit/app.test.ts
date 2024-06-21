@@ -1,15 +1,14 @@
-import { getMockReq, getMockRes } from '@jest-mock/express'
-import express, { Response, static as staticDir } from 'express'
+import express, { static as staticDir } from 'express'
 import helmet from 'helmet'
 import { join } from 'path'
-import { createApp, getApp, renderFile } from '../../src/app'
-import { mock } from '../mocks'
+import { createApp, getApp, renderFile } from '../../src/app.js'
+import { mock, mockReq, mockRes } from '../mocks.js'
 
-jest.mock('express')
-jest.mock('helmet')
+vi.mock('express')
+vi.mock('helmet')
 
 function mockExpress() {
-  const expressMock = { use: jest.fn(), get: jest.fn() }
+  const expressMock = { use: vi.fn(), get: vi.fn() }
   mock(express).mockReturnValue(expressMock)
   mock(staticDir).mockReturnValue('static')
   return expressMock
@@ -61,16 +60,16 @@ describe('createApp', () => {
 
 describe('renderFile', () => {
   it('should send index.html file', () => {
-    const { res } = getMockRes<Response>()
-    renderFile(getMockReq(), res)
+    const res = mockRes()
+    renderFile(mockReq(), res)
     expect(res.sendFile).toHaveBeenCalledWith(join('public-dir', 'index.html'))
   })
 })
 
 describe('getApp', () => {
   it('should send app info', () => {
-    const { res } = getMockRes<Response>()
-    getApp(getMockReq(), res)
+    const res = mockRes()
+    getApp(mockReq(), res)
     expect(res.json).toHaveBeenCalledWith({
       author: { name: 'Sara Morillon', url: 'https://saramorillon.com/' },
       name: 'mini-planning',

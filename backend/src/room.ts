@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io'
-import { log } from './logger'
+import { log } from './logger.js'
 
 export type User = { name: string; observer: boolean; vote: string }
 

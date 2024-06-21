@@ -1,5 +1,5 @@
-import { room, rooms } from '../../src/room'
-import { mockSocket } from '../mocks'
+import { room, rooms } from '../../src/room.js'
+import { mockSocket } from '../mocks.js'
 
 describe('room', () => {
   beforeEach(() => {

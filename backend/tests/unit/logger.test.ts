@@ -1,5 +1,5 @@
 import mockdate from 'mockdate'
-import { parseError, start } from '../../src/logger'
+import { parseError, start } from '../../src/logger.js'
 
 mockdate.set('2022-01-01T00:00:00.000Z')
 

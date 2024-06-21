@@ -3,9 +3,9 @@ import helmet from 'helmet'
 import { createServer } from 'http'
 import { join } from 'path'
 import { Server } from 'socket.io'
-import { author, name, repository, version } from '../package.json'
-import { config } from './config'
-import { room } from './room'
+import project from '../package.json' assert { type: 'json' }
+import { config } from './config.js'
+import { room } from './room.js'
 
 const { contentSecurityPolicy, publicDir } = config
 
@@ -28,5 +28,5 @@ export function renderFile(req: Request, res: Response): void {
 }
 
 export function getApp(req: Request, res: Response): void {
-  res.json({ name, version, repository, author })
+  res.json({ name: project.name, version: project.version, repository: project.repository, author: project.author })
 }
