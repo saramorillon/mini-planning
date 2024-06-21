@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import { Votes } from '../../utils/getVotes.js'
+import React, { type Dispatch, type SetStateAction } from 'react'
+import type { Votes } from '../../utils/getVotes.js'
 import { cards } from './Cards.js'
 import { VoteBar } from './VoteBar.js'
 

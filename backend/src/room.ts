@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io'
+import type { Socket } from 'socket.io'
 import { log } from './logger.js'
 
 export type User = { name: string; observer: boolean; vote: string }
@@ -42,7 +42,9 @@ export function room(socket: Socket) {
   socket.on('voting', (voting: boolean) => {
     room.voting = voting
     if (room.voting) {
-      Object.values(room.users).forEach((user) => (user.vote = ''))
+      for (const user of Object.values(room.users)) {
+        user.vote = ''
+      }
     }
     socket.nsp.emit('refresh', room)
   })

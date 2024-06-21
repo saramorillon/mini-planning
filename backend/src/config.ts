@@ -1,5 +1,5 @@
 import { bool, cleanEnv, num, str } from 'envalid'
-import { HelmetOptions } from 'helmet'
+import type { HelmetOptions } from 'helmet'
 
 const env = cleanEnv(process.env, {
   APP_PORT: num({ default: 80 }),

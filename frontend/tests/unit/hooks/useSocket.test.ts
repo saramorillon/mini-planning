@@ -1,5 +1,5 @@
+import { EventEmitter } from 'node:events'
 import { act, renderHook } from '@testing-library/react'
-import { EventEmitter } from 'events'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { useSocket } from '../../../src/hooks/useSocket.js'

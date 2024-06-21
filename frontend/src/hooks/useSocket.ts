@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
-import { User } from '../models/User.js'
+import type { User } from '../models/User.js'
 
 export interface IRoomProps {
   users: User[]
@@ -37,6 +37,6 @@ export function useSocket(user: Omit<User, 'vote'>): IRoomProps {
 
   return useMemo(
     () => ({ users: Object.values(users), voting, vote, onVote, onChangeStatus }),
-    [users, voting, vote, onVote, onChangeStatus]
+    [users, voting, vote, onVote, onChangeStatus],
   )
 }

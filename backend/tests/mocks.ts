@@ -1,7 +1,7 @@
-import { EventEmitter } from 'events'
-import { Request, Response } from 'express'
-import { Namespace, Socket } from 'socket.io'
-import { Mock } from 'vitest'
+import { EventEmitter } from 'node:events'
+import type { Request, Response } from 'express'
+import type { Namespace, Socket } from 'socket.io'
+import type { Mock } from 'vitest'
 
 export function mock(fn: unknown): Mock {
   return fn as Mock

@@ -1,5 +1,5 @@
 import React from 'react'
-import { User } from '../../models/User.js'
+import type { User } from '../../models/User.js'
 
 interface IVoteProps {
   user: Omit<User, 'observer'>

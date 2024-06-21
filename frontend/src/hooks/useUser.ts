@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-import { User } from '../models/User.js'
+import type { User } from '../models/User.js'
 
 export function useUser(): Omit<User, 'vote'> | undefined {
   const { search } = useLocation()

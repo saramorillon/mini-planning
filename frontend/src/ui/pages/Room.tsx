@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useSocket } from '../../hooks/useSocket.js'
-import { User } from '../../models/User.js'
+import type { User } from '../../models/User.js'
 import { getVotes } from '../../utils/getVotes.js'
 import { Cards } from '../components/Cards.js'
 import { Observers } from '../components/Observers.js'
@@ -21,10 +21,16 @@ export function Room({ user }: IRoomProps): JSX.Element {
     <>
       <header className="p4 center">
         {!user.observer && <Cards vote={vote} onVote={onVote} active={voting} />}
-        <button className="mr3" disabled={!voting} data-variant={voting ? 'primary' : ''} onClick={onChangeStatus}>
+        <button
+          type="button"
+          className="mr3"
+          disabled={!voting}
+          data-variant={voting ? 'primary' : ''}
+          onClick={onChangeStatus}
+        >
           Show votes
         </button>
-        <button disabled={voting} data-variant={voting ? '' : 'primary'} onClick={onChangeStatus}>
+        <button type="button" disabled={voting} data-variant={voting ? '' : 'primary'} onClick={onChangeStatus}>
           Reset
         </button>
       </header>

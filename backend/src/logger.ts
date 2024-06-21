@@ -1,4 +1,4 @@
-import { types } from 'util'
+import { types } from 'node:util'
 
 interface IAction {
   success: () => void
@@ -14,8 +14,8 @@ export function start(message: string, meta?: Record<string, unknown>): IAction 
   log('info', message, meta)
 
   return {
-    success: () => log('info', message + '_success', meta),
-    failure: (error) => log('error', message + '_failure', { ...meta, error: parseError(error) }),
+    success: () => log('info', `${message}_success`, meta),
+    failure: (error) => log('error', `${message}_failure`, { ...meta, error: parseError(error) }),
   }
 }
 

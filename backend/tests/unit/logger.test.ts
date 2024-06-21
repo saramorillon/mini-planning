@@ -12,7 +12,7 @@ describe('start', () => {
         timestamp: '2022-01-01T00:00:00.000Z',
         message: 'message',
         prop: 'value',
-      })
+      }),
     )
   })
 
@@ -31,7 +31,7 @@ describe('start', () => {
         timestamp: '2022-01-01T00:00:00.000Z',
         message: 'message_success',
         prop: 'value',
-      })
+      }),
     )
   })
 
@@ -46,7 +46,7 @@ describe('start', () => {
         message: 'message_failure',
         prop: 'value',
         error: { message: error.message, stack: error.stack },
-      })
+      }),
     )
   })
 })

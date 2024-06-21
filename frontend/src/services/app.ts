@@ -1,4 +1,4 @@
-import { IApp } from '../models/App.js'
+import type { IApp } from '../models/App.js'
 
 export function getApp(): Promise<IApp | null> {
   return fetch('/api/app')

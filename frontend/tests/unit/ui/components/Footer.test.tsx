@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import mockdate from 'mockdate'
 import React from 'react'
-import { IApp } from '../../../../src/models/App.js'
+import type { IApp } from '../../../../src/models/App.js'
 import { getApp } from '../../../../src/services/app.js'
 import { Footer } from '../../../../src/ui/components/Footer.js'
 import { mock, wait } from '../../../mocks.js'

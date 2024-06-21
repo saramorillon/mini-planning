@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from 'react'
+import React, { type FormEvent, useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser.js'
 import { Room } from './Room.js'
@@ -19,7 +19,7 @@ export function Lobby(): JSX.Element {
       search.set('observer', observer.toString())
       navigate(`${pathname}?${search}`)
     },
-    [navigate, pathname, name, observer]
+    [navigate, pathname, name, observer],
   )
 
   if (user) return <Room user={user} />

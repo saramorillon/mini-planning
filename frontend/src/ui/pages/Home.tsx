@@ -12,7 +12,7 @@ export function Home(): JSX.Element {
         <p>Create a room and send the invitation link to your team</p>
       </header>
       <main className="mx-auto max-width-3">
-        <button data-variant="primary" onClick={() => navigate(`/room/${v4()}`)}>
+        <button type="button" data-variant="primary" onClick={() => navigate(`/room/${v4()}`)}>
           Create a room now
         </button>
         <hr />

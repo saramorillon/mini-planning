@@ -1,8 +1,8 @@
 import { act } from '@testing-library/react'
-import React, { PropsWithChildren } from 'react'
+import React, { type PropsWithChildren } from 'react'
 import { MemoryRouter, useNavigate } from 'react-router-dom'
-import { Mock } from 'vitest'
-import { User } from '../src/models/User.js'
+import type { Mock } from 'vitest'
+import type { User } from '../src/models/User.js'
 
 export function mock(fn: unknown): Mock {
   return fn as Mock

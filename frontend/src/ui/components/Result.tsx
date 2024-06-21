@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { User } from '../../models/User.js'
-import { Votes } from '../../utils/getVotes.js'
+import type { User } from '../../models/User.js'
+import type { Votes } from '../../utils/getVotes.js'
 import { Chart } from './Chart.js'
 import { Voters } from './Voters.js'
 

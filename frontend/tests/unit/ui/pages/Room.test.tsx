@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import { IRoomProps, useSocket } from '../../../../src/hooks/useSocket.js'
+import { type IRoomProps, useSocket } from '../../../../src/hooks/useSocket.js'
 import { Room } from '../../../../src/ui/pages/Room.js'
 import { mock, mockUser } from '../../../mocks.js'
 

@@ -13,7 +13,7 @@ export function Cards({ vote, onVote, active }: ICardsProps): JSX.Element {
     (card: string) => {
       onVote(card)
     },
-    [onVote]
+    [onVote],
   )
 
   return (
@@ -23,6 +23,7 @@ export function Cards({ vote, onVote, active }: ICardsProps): JSX.Element {
         {cards.map((card) => (
           <button
             key={card}
+            type="button"
             className="m2 card"
             disabled={!active}
             data-variant={vote === card ? 'primary' : 'outlined'}

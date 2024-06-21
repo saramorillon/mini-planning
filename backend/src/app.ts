@@ -1,7 +1,7 @@
-import express, { Request, Response, static as staticDir } from 'express'
+import { createServer } from 'node:http'
+import { join } from 'node:path'
+import express, { type Request, type Response, static as staticDir } from 'express'
 import helmet from 'helmet'
-import { createServer } from 'http'
-import { join } from 'path'
 import { Server } from 'socket.io'
 import project from '../package.json' assert { type: 'json' }
 import { config } from './config.js'
