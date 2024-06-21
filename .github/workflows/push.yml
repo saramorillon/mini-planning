@@ -16,6 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get version
+        id: version
+        shell: bash
+        run: |
+          ref_name="${{ github.ref_name }}"
+          version=${ref_name:1}
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -26,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: saramorillon/mini-planning:${{ github.ref_name }},saramorillon/mini-planning:latest
+          tags: saramorillon/mini-planning:${{ steps.version.outputs.VERSION }},saramorillon/mini-planning:latest
 
   send_discord_notification:
     runs-on: ubuntu-latest
