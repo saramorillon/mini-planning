@@ -72,7 +72,7 @@ describe('getApp', () => {
     getApp(mockReq(), res)
     expect(res.json).toHaveBeenCalledWith({
       author: { name: 'Sara Morillon', url: 'https://saramorillon.com/' },
-      name: 'mini-planning',
+      name: '@mini-planning/backend',
       repository: { url: 'https://github.com/saramorillon/mini-planning' },
       version: expect.any(String),
     })

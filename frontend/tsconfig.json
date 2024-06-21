@@ -2,6 +2,7 @@
   "extends": "./tsconfig.build.json",
   "include": ["src", "tests", "vite.config.ts"],
   "compilerOptions": {
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "sourceMap": true
   }
 }

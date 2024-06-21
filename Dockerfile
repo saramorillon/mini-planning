@@ -1,75 +1,46 @@
-FROM node:16.13.1-alpine as base
+FROM node:20-alpine AS base
 
-ENV NODE_ENV=production
+WORKDIR /usr/app
 
-WORKDIR /app
+RUN npm i -g pnpm
 
-####################
-##### Sources ######
-####################
+FROM base as build
 
-# Backend 
-FROM base as bsources
+COPY package.json ./
+COPY pnpm-workspace.yaml ./
+COPY pnpm-lock.yaml ./
 
 COPY backend/package.json backend/
-COPY backend/yarn.lock backend/
-
-RUN yarn --cwd backend install --production=false
-
-# Frontend 
-FROM base as fsources
-
 COPY frontend/package.json frontend/
-COPY frontend/yarn.lock frontend/
 
-RUN yarn --cwd frontend install --production=false
-
-####################
-### Dependencies ###
-####################
-
-# Backend
-FROM bsources as dependencies
-
-RUN yarn --cwd backend install --frozen-lockfile --force --production --ignore-scripts --prefer-offline
-
-####################
-###### Build #######
-####################
-
-# Backend
-FROM bsources as bbuild
+RUN pnpm install --frozen-lockfile
 
 COPY backend/tsconfig.json backend/
 COPY backend/tsconfig.build.json backend/
 COPY backend/src backend/src
 
-RUN yarn --cwd backend build
-
-# Frontend
-FROM fsources as fbuild
-
 COPY frontend/tsconfig.json frontend/
 COPY frontend/tsconfig.build.json frontend/
-COPY frontend/vite.config.ts frontend/
 COPY frontend/index.html frontend/
+COPY frontend/vite.config.ts frontend/
 COPY frontend/public frontend/public
 COPY frontend/src frontend/src
 
-RUN yarn --cwd frontend build
+RUN pnpm run -r build
 
-####################
-##### Release ######
-####################
+RUN pnpm deploy --filter=@mini-planning/backend --fail-if-no-match --prod /usr/app/pruned
+
+###### Release stage #####
 
 FROM base as release
 
-ENV PUBLIC_DIR=/app/dist/public
+ENV PUBLIC_DIR=/usr/app/public
 
-COPY --from=dependencies --chown=node:node /app/backend/node_modules/ /app/node_modules/
-COPY --from=bbuild --chown=node:node /app/backend/dist/ /app/dist/
-COPY --from=fbuild --chown=node:node /app/frontend/dist/ /app/dist/public
+COPY --from=build --chown=node:node /usr/app/pruned/package.json /usr/app/package.json
+COPY --from=build --chown=node:node /usr/app/pruned/node_modules /usr/app/node_modules
+COPY --from=build --chown=node:node /usr/app/pruned/dist /usr/app/dist
+COPY --from=build --chown=node:node /usr/app/frontend/dist /usr/app/public
 
 USER node
 
-CMD ["yarn", "--cwd", "dist/backend", "start"]
+CMD ["node", "/usr/app/dist/src/index.js"]

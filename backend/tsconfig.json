@@ -3,6 +3,7 @@
   "include": ["src", "tests", "vitest.config.ts"],
   "compilerOptions": {
     "types": ["vitest/globals"],
-    "lib": ["DOM"]
+    "lib": ["DOM"],
+    "sourceMap": true
   }
 }
