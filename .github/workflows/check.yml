@@ -45,5 +45,8 @@ jobs:
 
     steps:
       - name: Send Discord message
+        shell: bash
         run: |
-          curl -X POST -d '{"content":"Checks on ${{ github.repository }}: ${{ needs.build_and_test.result }}"}' -H "Content-Type: application/json" ${{ secrets.DISCORD_WEBHOOK }}
+          result="**${${{ needs.build_and_test.result }}^^}**""
+          repo_url="[${{ github.repository }}](${{ github.repositoryUrl }})"
+          curl -X POST -d '{"content":"Checks on $repo_url: $result"}' -H "Content-Type: application/json" ${{ secrets.DISCORD_WEBHOOK }}
