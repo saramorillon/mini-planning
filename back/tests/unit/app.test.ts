@@ -1,6 +1,6 @@
+import { join } from 'node:path'
 import express, { static as staticDir } from 'express'
 import helmet from 'helmet'
-import { join } from 'node:path'
 import { createApp, getApp, renderFile } from '../../src/app.js'
 import { mock, mockReq, mockRes } from '../mocks.js'
 
