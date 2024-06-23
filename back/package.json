@@ -32,5 +32,19 @@
     "express": "^4.19.2",
     "helmet": "^7.1.0",
     "socket.io": "^4.7.5"
+  },
+  "nodemon": {
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules"
+    ],
+    "execMap": {
+      "ts": "node --require ts-node/register"
+    },
+    "watch": [
+      "src/"
+    ],
+    "ext": "json,ts,.env"
   }
 }
