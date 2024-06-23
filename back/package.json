@@ -13,17 +13,14 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "node src/index.js",
-    "start:dev": "nodemon -r dotenv/config --inspect=9999 src/index.ts",
-    "format": "prettier \"{src,tests}/**/*.{ts,tsx}\" --write",
-    "lint": "eslint \"{src,tests}/**/*.{ts,tsx}\""
+    "watch": "node --import tsx --watch-path src -r dotenv/config --inspect=9999 src/index.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.7",
     "dotenv": "^16.4.5",
     "mockdate": "^3.0.5",
-    "nodemon": "^3.1.4",
+    "tsx": "^4.15.7",
     "typescript": "^5.5.2",
     "vitest": "^1.6.0"
   },
@@ -32,19 +29,5 @@
     "express": "^4.19.2",
     "helmet": "^7.1.0",
     "socket.io": "^4.7.5"
-  },
-  "nodemon": {
-    "restartable": "rs",
-    "ignore": [
-      ".git",
-      "node_modules/**/node_modules"
-    ],
-    "execMap": {
-      "ts": "node --require ts-node/register"
-    },
-    "watch": [
-      "src/"
-    ],
-    "ext": "json,ts,.env"
   }
 }
