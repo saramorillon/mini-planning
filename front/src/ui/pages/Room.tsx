@@ -31,7 +31,7 @@ export function Room({ user }: IRoomProps): JSX.Element {
           Show votes
         </button>
         <button type="button" disabled={voting} data-variant={voting ? '' : 'primary'} onClick={onChangeStatus}>
-          Reset
+          Reset all votes
         </button>
       </header>
       <div className="px4 mx-auto max-width-4 pb2">

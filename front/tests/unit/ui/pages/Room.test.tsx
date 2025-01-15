@@ -58,7 +58,7 @@ describe('Room', () => {
   it('should change voting status when clicking on "Reset" button', () => {
     const roomPropsMock = mockSocket()
     render(<Room user={mockUser()} />)
-    fireEvent.click(screen.getByText('Reset'))
+    fireEvent.click(screen.getByText('Reset all votes'))
     expect(roomPropsMock.onChangeStatus).toHaveBeenCalled()
   })
 
@@ -76,11 +76,11 @@ describe('Room', () => {
   it('should disable reset button when voting is true', () => {
     mockSocket({ voting: true })
     render(<Room user={mockUser()} />)
-    expect(screen.getByRole('button', { name: 'Reset' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Reset all votes' })).toBeDisabled()
   })
 
   it('should enable reset button when voting is false', () => {
     render(<Room user={mockUser()} />)
-    expect(screen.getByRole('button', { name: 'Reset' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Reset all votes' })).toBeEnabled()
   })
 })
