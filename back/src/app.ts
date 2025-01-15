@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import express, { type Request, type Response, static as staticDir } from 'express'
 import helmet from 'helmet'
 import { Server } from 'socket.io'
-import project from '../package.json' assert { type: 'json' }
+import project from '../package.json' with { type: 'json' }
 import { config } from './config.js'
 import { room } from './room.js'
 
